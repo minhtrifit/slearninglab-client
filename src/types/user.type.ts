@@ -5,3 +5,8 @@ export interface UserAccountType {
   email: string;
   roles: string[];
 }
+
+export interface ConfirmEmailType {
+  code: string | any;
+  checkCode: string | any;
+}

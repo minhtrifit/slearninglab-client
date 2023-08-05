@@ -113,7 +113,7 @@ const RegisterAccount = (props: PropType) => {
         <Select placeholder="Chọn vai trò">
           <Option value="student">Học sinh</Option>
           <Option value="teacher">Giáo viên</Option>
-          {/* <Option value="other">Quản trị viên</Option> */}
+          {/* <Option value="admin">Quản trị viên</Option> */}
         </Select>
       </Form.Item>
 
