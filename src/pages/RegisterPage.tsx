@@ -119,37 +119,39 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <Space
-      direction="horizontal"
-      size="large"
-      className="my-32 mx-auto min-h-[500px] w-[90%] flex flex-row border-solid border-2 border-blue-200 rounded sm:justify-center md:w-[50%] xl:w-[90%] 2xl:justify-around 2xl:w-[70%]"
-    >
-      <ToastContainer position="bottom-left" theme="colored" />
-      {isLoading ? (
-        <Loading />
-      ) : code === "" ? (
-        <RegisterAccount
-          formItemLayout={formItemLayout}
-          form={form}
-          onFinish={registerAccountSubmit}
-          Option={Option}
-          tailFormItemLayout={tailFormItemLayout}
-        />
-      ) : (
-        <ConfirmEmailCode
-          formItemLayout={formItemLayout}
-          form={form}
-          onFinish={confirmEmailCode}
-          tailFormItemLayout={tailFormItemLayout}
-        />
-      )}
-      <div className="hidden xl:block xl:h-[500px]">
-        <img
-          src="../banner/register.jpg"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div>
-    </Space>
+    <div className="min-h-screen bg-left py-32 bg-[url('/background/bg1.jpg')]">
+      <Space
+        direction="horizontal"
+        size="large"
+        className="bg-sky-50 mx-auto min-h-[700px] w-[90%] flex flex-row border-solid border-2 border-blue-200 rounded sm:justify-center md:w-[50%] xl:w-[90%] 2xl:justify-around 2xl:w-[70%]"
+      >
+        <ToastContainer position="bottom-left" theme="colored" />
+        {isLoading ? (
+          <Loading />
+        ) : code === "" ? (
+          <RegisterAccount
+            formItemLayout={formItemLayout}
+            form={form}
+            onFinish={registerAccountSubmit}
+            Option={Option}
+            tailFormItemLayout={tailFormItemLayout}
+          />
+        ) : (
+          <ConfirmEmailCode
+            formItemLayout={formItemLayout}
+            form={form}
+            onFinish={confirmEmailCode}
+            tailFormItemLayout={tailFormItemLayout}
+          />
+        )}
+        <div className="hidden xl:block xl:h-[500px]">
+          <img
+            src="../banner/register.jpg"
+            style={{ width: "100%", height: "100%" }}
+          />
+        </div>
+      </Space>
+    </div>
   );
 };
 

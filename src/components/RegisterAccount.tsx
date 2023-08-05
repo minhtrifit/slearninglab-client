@@ -21,7 +21,7 @@ const RegisterAccount = (props: PropType) => {
       className="p-6 md:w-[500px]"
       scrollToFirstError
     >
-      <p className="text-3xl text-center my-10 font-bold text-sky-400">
+      <p className="text-2xl sm:text-3xl text-center my-10 font-bold text-sky-400">
         ĐĂNG KÝ TÀI KHOẢN
       </p>
 
