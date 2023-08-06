@@ -64,7 +64,7 @@ const RegisterPage: React.FC = () => {
   useEffect(() => {
     if (code !== "" && checkCode != "") {
       console.log(code, checkCode);
-      localStorage.setItem("code", JSON.stringify(code));
+      // localStorage.setItem("code", JSON.stringify(code));
       localStorage.setItem("checkCode", JSON.stringify(checkCode));
     }
   }, [code, checkCode]);

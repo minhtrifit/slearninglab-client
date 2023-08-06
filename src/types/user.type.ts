@@ -10,3 +10,8 @@ export interface ConfirmEmailType {
   code: string | any;
   checkCode: string | any;
 }
+
+export interface LoginAccountType {
+  username: string;
+  password: string;
+}

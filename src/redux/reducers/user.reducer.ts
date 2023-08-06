@@ -1,6 +1,10 @@
 import { createReducer, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { UserAccountType, ConfirmEmailType } from "../../types/user.type";
+import {
+  UserAccountType,
+  ConfirmEmailType,
+  LoginAccountType,
+} from "../../types/user.type";
 
 // Interface declair
 interface UserState {
@@ -12,6 +16,9 @@ interface UserState {
   isLoading: boolean;
   code: string;
   checkCode: string;
+  accessToken: string;
+  refreshToken: string;
+  isLogin: boolean;
 }
 
 // InitialState value
@@ -24,6 +31,9 @@ const initialState: UserState = {
   isLoading: false,
   code: "",
   checkCode: "",
+  accessToken: "",
+  refreshToken: "",
+  isLogin: false,
 };
 
 // createAsyncThunk middleware
@@ -76,6 +86,61 @@ export const confirmEmailRegister = createAsyncThunk(
   }
 );
 
+export const handleAccessToken = createAsyncThunk(
+  "user/handle_access_token",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (_, thunkAPI) => {
+    try {
+      const accessToken = localStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      if (accessToken) {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/verify`,
+          {
+            // data
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        return response.data;
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const loginAccount = createAsyncThunk(
+  "user/login_account",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (account: LoginAccountType, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/login`,
+        {
+          body: account,
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(registerAccount.pending, (state) => {
@@ -86,7 +151,6 @@ const userReducer = createReducer(initialState, (builder) => {
         state.code = action.payload.code;
         state.checkCode = action.payload.checkCode;
       }
-
       state.isLoading = false;
     })
     .addCase(registerAccount.rejected, (state) => {
@@ -105,6 +169,64 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(confirmEmailRegister.rejected, (state) => {
       state.isLoading = false;
+    })
+    .addCase(loginAccount.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(loginAccount.fulfilled, (state, action) => {
+      if (action.payload) {
+        console.log(action.payload);
+
+        state.id = action.payload.id;
+        state.email = action.payload.email;
+        state.username = action.payload.username;
+        state.name = action.payload.name;
+        state.roles = action.payload.roles;
+
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+
+        localStorage.setItem(
+          "accessToken",
+          JSON.stringify(action.payload.accessToken)
+        );
+        localStorage.setItem(
+          "refreshToken",
+          JSON.stringify(action.payload.refreshToken)
+        );
+
+        state.isLogin = true;
+      }
+      state.isLoading = false;
+    })
+    .addCase(loginAccount.rejected, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(handleAccessToken.fulfilled, (state, action) => {
+      if (action.payload && action.payload?.message === "Access token valid") {
+        console.log(action.payload);
+
+        state.id = action.payload.data.id;
+        state.email = action.payload.data.email;
+        state.username = action.payload.data.username;
+        state.name = action.payload.data.name;
+        state.roles = action.payload.data.roles;
+
+        const accessToken: any = localStorage
+          .getItem("accessToken")
+          ?.toString()
+          .replace(/^"(.*)"$/, "$1");
+
+        const refreshToken: any = localStorage
+          .getItem("refreshToken")
+          ?.toString()
+          .replace(/^"(.*)"$/, "$1");
+
+        state.accessToken = accessToken;
+        state.refreshToken = refreshToken;
+
+        state.isLogin = true;
+      }
     });
 });
 
