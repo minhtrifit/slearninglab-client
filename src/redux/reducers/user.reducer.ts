@@ -92,7 +92,7 @@ export const handleAccessToken = createAsyncThunk(
 
   async (_, thunkAPI) => {
     try {
-      const accessToken = localStorage
+      const accessToken = sessionStorage
         .getItem("accessToken")
         ?.toString()
         .replace(/^"(.*)"$/, "$1");
@@ -186,11 +186,11 @@ const userReducer = createReducer(initialState, (builder) => {
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
 
-        localStorage.setItem(
+        sessionStorage.setItem(
           "accessToken",
           JSON.stringify(action.payload.accessToken)
         );
-        localStorage.setItem(
+        sessionStorage.setItem(
           "refreshToken",
           JSON.stringify(action.payload.refreshToken)
         );
@@ -212,12 +212,12 @@ const userReducer = createReducer(initialState, (builder) => {
         state.name = action.payload.data.name;
         state.roles = action.payload.data.roles;
 
-        const accessToken: any = localStorage
+        const accessToken: any = sessionStorage
           .getItem("accessToken")
           ?.toString()
           .replace(/^"(.*)"$/, "$1");
 
-        const refreshToken: any = localStorage
+        const refreshToken: any = sessionStorage
           .getItem("refreshToken")
           ?.toString()
           .replace(/^"(.*)"$/, "$1");

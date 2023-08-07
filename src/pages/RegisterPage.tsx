@@ -64,8 +64,8 @@ const RegisterPage: React.FC = () => {
   useEffect(() => {
     if (code !== "" && checkCode != "") {
       console.log(code, checkCode);
-      // localStorage.setItem("code", JSON.stringify(code));
-      localStorage.setItem("checkCode", JSON.stringify(checkCode));
+      // sessionStorage.setItem("code", JSON.stringify(code));
+      sessionStorage.setItem("checkCode", JSON.stringify(checkCode));
     }
   }, [code, checkCode]);
 
@@ -98,7 +98,7 @@ const RegisterPage: React.FC = () => {
   const confirmEmailCode = async (values: any) => {
     // console.log("Received values of form: ", values);
 
-    const checkCode = localStorage
+    const checkCode = sessionStorage
       .getItem("checkCode")
       ?.toString()
       .replace(/^"(.*)"$/, "$1");

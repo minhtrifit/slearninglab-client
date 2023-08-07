@@ -3,7 +3,7 @@ import axios from "axios";
 export const axiosInterReq = axios.interceptors.request.use(
   async (config: any) => {
     if (config.url.includes("/auth/verify")) {
-      const accessToken = localStorage
+      const accessToken = sessionStorage
         .getItem("accessToken")
         ?.toString()
         .replace(/^"(.*)"$/, "$1");
@@ -35,11 +35,11 @@ export const axiosInterRes = axios.interceptors.response.use(
 
     if (originalRequest.url.includes("/auth/refresh")) {
       console.log("Login time out");
-      localStorage.clear();
+      sessionStorage.clear();
     }
 
     if (originalRequest.url.includes("/auth/verify")) {
-      const refreshToken = localStorage
+      const refreshToken = sessionStorage
         .getItem("refreshToken")
         ?.toString()
         .replace(/^"(.*)"$/, "$1");
@@ -55,12 +55,12 @@ export const axiosInterRes = axios.interceptors.response.use(
 
       error.response.config.headers.Authorization = `Bearer ${rs.data.tokens?.accessToken}`;
 
-      localStorage.setItem(
+      sessionStorage.setItem(
         "accessToken",
         JSON.stringify(rs.data.tokens?.accessToken)
       );
 
-      localStorage.setItem(
+      sessionStorage.setItem(
         "refreshToken",
         JSON.stringify(rs.data.tokens?.refreshToken)
       );
