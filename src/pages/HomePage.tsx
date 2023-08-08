@@ -7,6 +7,8 @@ import { Navigate } from "react-router-dom";
 import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { Layout, MenuProps, theme, ConfigProvider, Switch } from "antd";
 
+import { logoutAccount } from "../redux/actions/user.action";
+
 import HomeDashboard from "../components/HomeDashboard";
 import HomeClasses from "../components/HomeClasses";
 import HomeNavigation from "../components/HomeNavigation";
@@ -32,6 +34,7 @@ const HomePage = () => {
   const [navContent, setNavContent] = useState<any>();
   const [navContentDefault, setNavContentDefault] = useState<number>(1);
 
+  const dispath = useDispatch();
   const dispathAsync = useAppDispatch();
 
   useTitle("Slearninglab | Trang chủ");
@@ -43,6 +46,8 @@ const HomePage = () => {
   const isLogin = useSelector<RootState, boolean | undefined>(
     (state) => state.user.isLogin
   );
+
+  const name = useSelector<RootState, string>((state) => state.user.name);
 
   useEffect(() => {
     const checkMode: string | null = sessionStorage.getItem("mode");
@@ -67,10 +72,10 @@ const HomePage = () => {
       setIsDarkMode(false);
       setNavContentDefault(1);
       sessionStorage.setItem("mode", "false");
-      sessionStorage.setItem("navContent", JSON.stringify("Trang chủ"));
+      sessionStorage.setItem("navContent", "Trang chủ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navContentDefault]);
+  }, []);
 
   const switchMode = (_checked: boolean) => {
     setIsDarkMode(!isDarkMode);
@@ -83,6 +88,13 @@ const HomePage = () => {
       "navContent",
       JSON.stringify(e.domEvent.target.textContent)
     );
+  };
+
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    console.log("click", e);
+    if (e.key === "logout") {
+      dispath(logoutAccount());
+    }
   };
 
   return (
@@ -103,13 +115,15 @@ const HomePage = () => {
               items={items}
               onClick={onClick}
             />
-            <Layout className="site-layout ml-[80px] sm:ml-[200px]">
+            <Layout className="ml-[80px] sm:ml-[200px]">
               <HomeHeader
                 Header={Header}
                 isDarkMode={isDarkMode}
                 colorBgContainer={colorBgContainer}
                 Switch={Switch}
                 switchMode={switchMode}
+                name={name}
+                onClick={handleMenuClick}
               />
               <Content style={{ margin: "24px 20px 0", overflow: "initial" }}>
                 <div

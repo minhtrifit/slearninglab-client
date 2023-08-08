@@ -6,6 +6,8 @@ import {
   LoginAccountType,
 } from "../../types/user.type";
 
+import { logoutAccount } from "../actions/user.action";
+
 // Interface declair
 interface UserState {
   id: string;
@@ -227,6 +229,11 @@ const userReducer = createReducer(initialState, (builder) => {
 
         state.isLogin = true;
       }
+    })
+    .addCase(logoutAccount, () => {
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+      window.location.reload();
     });
 });
 
