@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { useTitle } from "../hooks/useTitle";
 import { RootState } from "../redux/store";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate, Routes, Route } from "react-router-dom";
 import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { Layout, MenuProps, theme, ConfigProvider, Switch } from "antd";
 
@@ -27,15 +27,13 @@ const items: MenuProps["items"] = [HomeOutlined, AppstoreOutlined].map(
   })
 );
 
-// let navContentDefault: number = 1;
-
 const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState<any>();
-  const [navContent, setNavContent] = useState<any>();
   const [navContentDefault, setNavContentDefault] = useState<number>(1);
 
   const dispath = useDispatch();
   const dispathAsync = useAppDispatch();
+  const navigate = useNavigate();
 
   useTitle("Slearninglab | Trang chủ");
 
@@ -49,32 +47,21 @@ const HomePage = () => {
 
   const name = useSelector<RootState, string>((state) => state.user.name);
 
+  // Navigation content event
+  useEffect(() => {
+    setNavContentDefault(1);
+  }, []);
+
+  // Night mode event
   useEffect(() => {
     const checkMode: string | null = sessionStorage.getItem("mode");
     if (checkMode !== null) {
       const myBool = checkMode.toLowerCase() === "true";
       setIsDarkMode(myBool);
     } else {
-      setIsDarkMode(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    const navContent: string | undefined | any = sessionStorage
-      .getItem("navContent")
-      ?.toString()
-      .replace(/^"(.*)"$/, "$1");
-
-    if (navContent !== undefined) {
-      setNavContent(navContent);
-      setNavContentDefault(navLabel.indexOf(navContent) + 1);
-    } else {
-      setIsDarkMode(false);
-      setNavContentDefault(1);
       sessionStorage.setItem("mode", "false");
-      sessionStorage.setItem("navContent", "Trang chủ");
+      setIsDarkMode(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const switchMode = (_checked: boolean) => {
@@ -83,11 +70,14 @@ const HomePage = () => {
   };
 
   const onClick: MenuProps["onClick"] = (e: any) => {
-    setNavContent(e.domEvent.target.textContent);
-    sessionStorage.setItem(
-      "navContent",
-      JSON.stringify(e.domEvent.target.textContent)
-    );
+    if (e.domEvent.target.textContent === "Trang chủ") {
+      navigate("/home");
+      document.title = "Slearninglab | Trang chủ";
+    }
+    if (e.domEvent.target.textContent === "Lớp học") {
+      navigate("/home/classes");
+      document.title = "Slearninglab | Lớp học";
+    }
   };
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -115,7 +105,13 @@ const HomePage = () => {
               items={items}
               onClick={onClick}
             />
-            <Layout className="ml-[80px] sm:ml-[200px]">
+            <Layout
+              className={`${
+                isDarkMode
+                  ? "ml-[80px] sm:ml-[200px] bg-zinc-900"
+                  : "ml-[80px] sm:ml-[200px]"
+              }`}
+            >
               <HomeHeader
                 Header={Header}
                 isDarkMode={isDarkMode}
@@ -127,18 +123,20 @@ const HomePage = () => {
               />
               <Content style={{ margin: "24px 20px 0", overflow: "initial" }}>
                 <div
-                  className={`${isDarkMode ? "bg-gray-900" : ""}`}
+                  className={`${isDarkMode ? "bg-zinc-800" : ""}`}
                   style={{
                     padding: 24,
                     color: isDarkMode ? "#fff" : undefined,
                     background: !isDarkMode ? colorBgContainer : undefined,
                   }}
                 >
-                  {navContent === "Trang chủ" && <HomeDashboard />}
-                  {navContent === "Lớp học" && <HomeClasses />}
+                  <Routes>
+                    <Route path="/" element={<HomeDashboard />} />
+                    <Route path="/classes/*" element={<HomeClasses />} />
+                  </Routes>
                 </div>
               </Content>
-              <HomeFooter Footer={Footer} />
+              <HomeFooter isDarkMode={isDarkMode} Footer={Footer} />
             </Layout>
           </Layout>
         </ConfigProvider>

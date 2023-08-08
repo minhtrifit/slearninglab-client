@@ -12,7 +12,7 @@ const { Header } = Layout;
 const items: MenuProps["items"] = [
   {
     key: "profile",
-    label: <Link to="/user/profile">Trang cá nhân</Link>,
+    label: <Link to="/home/profile">Trang cá nhân</Link>,
     icon: <UserOutlined />,
   },
   {
