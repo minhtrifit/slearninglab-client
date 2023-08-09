@@ -1,8 +1,8 @@
 // Listen event to socket
 export const StartListeners = (socket: any, dispatch: any) => {
   socket.on("user_connected", (rs: { clientId: string; uid: string }) => {
-    console.info("Client ID:", rs.clientId);
-    console.info("Uid:", rs.uid);
+    // console.info("Client ID:", rs.clientId);
+    // console.info("Uid:", rs.uid);
     dispatch({ type: "update_uid", payload: rs.uid });
   });
 
