@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { useTitle } from "../hooks/useTitle";
+import { useSocket } from "../hooks/useSocket";
+import { StartListeners, SendHandshake } from "../helpers/socket";
 import { RootState } from "../redux/store";
 import { Navigate, useNavigate, Routes, Route } from "react-router-dom";
 import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
@@ -31,11 +33,15 @@ const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState<any>();
   const [navContentDefault, setNavContentDefault] = useState<number>(1);
 
-  const dispath = useDispatch();
-  const dispathAsync = useAppDispatch();
+  const dispatch = useDispatch();
+  const dispatchAsync = useAppDispatch();
   const navigate = useNavigate();
 
   useTitle("Slearninglab | Trang chủ");
+
+  const socket = useSocket(import.meta.env.VITE_API_URL, {
+    autoConnect: false,
+  });
 
   const {
     token: { colorBgContainer },
@@ -45,7 +51,31 @@ const HomePage = () => {
     (state) => state.user.isLogin
   );
 
+  const username = useSelector<RootState, string>(
+    (state) => state.user.username
+  );
   const name = useSelector<RootState, string>((state) => state.user.name);
+
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", function (e) {
+  //     e.preventDefault();
+  //     e.returnValue = "";
+  //   });
+  // }, []);
+
+  // Socket event
+  useEffect(() => {
+    socket.connect();
+    dispatch({ type: "update_socket", payload: socket });
+
+    // Listen event to socket
+    StartListeners(socket, dispatch);
+
+    // Send event to socket
+    SendHandshake(socket, username);
+
+    // eslint-disable-next-line
+  }, []);
 
   // Navigation content event
   useEffect(() => {
@@ -83,7 +113,7 @@ const HomePage = () => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     console.log("click", e);
     if (e.key === "logout") {
-      dispath(logoutAccount());
+      dispatch(logoutAccount());
     }
   };
 

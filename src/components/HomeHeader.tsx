@@ -5,7 +5,9 @@ import {
   PoweroffOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { CountUp, useCountUp } from "use-count-up";
+import { useCountUp } from "use-count-up";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 const { Header } = Layout;
 
@@ -58,6 +60,10 @@ const HomeHeader = (props: propType) => {
     onClick,
   } = props;
 
+  const online = useSelector<RootState, number | undefined>(
+    (state) => state.socket.online
+  );
+
   return (
     <Header
       style={{
@@ -68,7 +74,7 @@ const HomeHeader = (props: propType) => {
       <div className="w-[200px] flex">
         <Statistic
           title="Người dùng hoạt động"
-          value={120555}
+          value={online}
           formatter={formatter}
         />
       </div>
