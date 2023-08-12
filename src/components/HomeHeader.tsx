@@ -1,13 +1,25 @@
-import { Layout, Switch, Space, Dropdown, MenuProps, Statistic } from "antd";
+import {
+  Layout,
+  Switch,
+  Space,
+  Dropdown,
+  MenuProps,
+  Statistic,
+  Badge,
+} from "antd";
 import {
   DownOutlined,
   UserOutlined,
   PoweroffOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCountUp } from "use-count-up";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+
+import NotificationModal from "./NotificationModal";
 
 const { Header } = Layout;
 
@@ -60,8 +72,14 @@ const HomeHeader = (props: propType) => {
     onClick,
   } = props;
 
+  const [openNotiModal, setOpenNotiModal] = useState(false);
+
   const online = useSelector<RootState, number | undefined>(
     (state) => state.socket.online
+  );
+
+  const notificationCount = useSelector<RootState, number>(
+    (state) => state.socket.notificationCount
   );
 
   return (
@@ -78,6 +96,10 @@ const HomeHeader = (props: propType) => {
           formatter={formatter}
         />
       </div>
+      <NotificationModal
+        openModal={openNotiModal}
+        setOpenModal={setOpenNotiModal}
+      />
       <Space size="large">
         <Switch
           checkedChildren="Sáng"
@@ -85,6 +107,17 @@ const HomeHeader = (props: propType) => {
           defaultChecked
           onChange={switchMode}
         />
+        <Badge
+          count={notificationCount}
+          className="mt-6 mx-3 hover:cursor-pointer"
+        >
+          <BellOutlined
+            className="text-2xl"
+            onClick={() => {
+              setOpenNotiModal(true);
+            }}
+          />
+        </Badge>
         <Dropdown
           menu={{
             onClick: onClick,

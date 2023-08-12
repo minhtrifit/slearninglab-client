@@ -13,6 +13,13 @@ export const StartListeners = (socket: any, dispatch: any) => {
   socket.on("connect_users_amount", (rs: number) => {
     dispatch({ type: "update_online", payload: rs });
   });
+
+  socket.on("join_class_notification", (rs: any) => {
+    dispatch({
+      type: "update_notification",
+      payload: rs,
+    });
+  });
 };
 
 // Send event to socket
@@ -22,6 +29,27 @@ export const SendHandshake = async (socket: any, username: string) => {
     { username: username },
     (checkConnect: boolean) => {
       console.log("Check connect socket:", checkConnect);
+    }
+  );
+};
+
+export const SendJoinClassRequest = async (
+  socket: any,
+  username: string,
+  teacherUsername: string,
+  className: string,
+  classId: string
+) => {
+  socket.emit(
+    "join_class_request",
+    {
+      username: username,
+      teacherUsername: teacherUsername,
+      className: className,
+      classId: classId,
+    },
+    (checkRequest: boolean) => {
+      console.log("Check send class join request:", checkRequest);
     }
   );
 };

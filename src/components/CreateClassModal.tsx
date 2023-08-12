@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Modal } from "antd";
 import { Button, Form, Input, InputNumber, Select } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { ToastContainer, toast } from "react-toastify";
+
+import { ClassroomType } from "../types/class.type";
+
+import { createClassroom } from "../redux/reducers/class.reducer";
 
 import { classImage } from "../utils/image";
 
@@ -31,6 +36,8 @@ interface PropType {
 const CreateClassModal = (props: PropType) => {
   const { openCreateClassModal, setOpenCreateClassModal } = props;
 
+  const dispatchAsync = useAppDispatch();
+
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [className, setClassName] = useState<any>();
   const [classAmount, setClassAmount] = useState<any>();
@@ -41,15 +48,17 @@ const CreateClassModal = (props: PropType) => {
   );
 
   const onFinish = async (values: any) => {
+    console.log(values);
     const img = classImage[Math.floor(Math.random() * classImage.length)];
 
-    const classData = {
-      username: username,
-      name: values.class.classname,
+    const classData: ClassroomType = {
+      teacherUsername: username,
+      className: values.class.classname,
       amount: values.class.amount,
       subject: values.class.subject,
-      intro: values.class.introduction,
+      introduction: values.class.introduction,
       img: img,
+      dateCreated: new Date(new Date().getTime()),
     };
 
     console.log(classData);
@@ -60,11 +69,17 @@ const CreateClassModal = (props: PropType) => {
 
     setConfirmLoading(true);
 
-    setTimeout(() => {
-      setOpenCreateClassModal(false);
-      setConfirmLoading(false);
-      toast.success("Tạo lớp học thành công");
-    }, 2000);
+    const rs = await dispatchAsync(createClassroom(classData));
+
+    if (rs.type === "user/register_account/rejected") {
+      sessionStorage.setItem("createClass", "false");
+    } else {
+      sessionStorage.setItem("createClass", "true");
+    }
+
+    setOpenCreateClassModal(false);
+    setConfirmLoading(false);
+    window.location.reload();
   };
 
   const handleCancel = () => {
@@ -73,7 +88,7 @@ const CreateClassModal = (props: PropType) => {
 
   return (
     <>
-      <ToastContainer position="bottom-left" theme="colored" />
+      {/* <ToastContainer position="bottom-left" theme="colored" /> */}
       <Modal
         title="Tạo lớp học"
         open={openCreateClassModal}
@@ -157,31 +172,31 @@ const CreateClassModal = (props: PropType) => {
               }
               options={[
                 {
-                  value: "1",
+                  value: "Toán học",
                   label: "Toán học",
                 },
                 {
-                  value: "2",
+                  value: "Văn học",
                   label: "Văn học",
                 },
                 {
-                  value: "3",
+                  value: "Ngoại ngữ",
                   label: "Ngoại ngữ",
                 },
                 {
-                  value: "4",
+                  value: "Tin học",
                   label: "Tin học",
                 },
                 {
-                  value: "5",
-                  label: "Vật Lý",
+                  value: "Vật lý",
+                  label: "Vật lý",
                 },
                 {
-                  value: "6",
+                  value: "Hóa học",
                   label: "Hóa học",
                 },
                 {
-                  value: "7",
+                  value: "Sinh học",
                   label: "Sinh học",
                 },
               ]}

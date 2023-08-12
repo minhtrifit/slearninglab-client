@@ -6,6 +6,9 @@ import {
   updateUsername,
   removeSocket,
   updateOnline,
+  updateNotification,
+  acceptClassRequset,
+  refuseClassRequest,
 } from "../actions/socket.action";
 
 // Interface declair
@@ -14,6 +17,8 @@ interface SocketState {
   uid: string | undefined;
   username: string | undefined;
   online: number | undefined;
+  notificationCount: number;
+  notificationList: any[];
 }
 
 // InitialState value
@@ -22,6 +27,8 @@ const initialState: SocketState = {
   uid: "",
   username: "",
   online: 0,
+  notificationCount: 0,
+  notificationList: [],
 };
 
 const socketReducer = createReducer(initialState, (builder) => {
@@ -42,6 +49,28 @@ const socketReducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateOnline, (state, action) => {
       state.online = action.payload;
+    })
+    .addCase(updateNotification, (state, action) => {
+      if (action.payload) {
+        state.notificationCount = state.notificationCount + 1;
+        state.notificationList.push(action.payload);
+      }
+    })
+    .addCase(refuseClassRequest, (state, action: any) => {
+      if (action.payload) {
+        state.notificationList = state.notificationList.filter((noti) => {
+          return noti.id !== action.payload.id;
+        });
+      }
+      state.notificationCount = state.notificationCount - 1;
+    })
+    .addCase(acceptClassRequset, (state, action: any) => {
+      if (action.payload) {
+        state.notificationList = state.notificationList.filter((noti) => {
+          return noti.id !== action.payload.id;
+        });
+      }
+      state.notificationCount = state.notificationCount - 1;
     });
 });
 

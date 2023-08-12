@@ -8,6 +8,7 @@ import { RootState } from "../redux/store";
 import { Navigate, useNavigate, Routes, Route } from "react-router-dom";
 import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { Layout, MenuProps, theme, ConfigProvider, Switch } from "antd";
+import { ToastContainer, toast } from "react-toastify";
 
 import { logoutAccount } from "../redux/actions/user.action";
 
@@ -63,6 +64,19 @@ const HomePage = () => {
   //   });
   // }, []);
 
+  useEffect(() => {
+    const createClass = sessionStorage.getItem("createClass");
+    if (createClass === "true") {
+      toast.success("Tạo lớp học thành công");
+    } else if (createClass === "false") {
+      toast.error("Tạo lớp học thất bại");
+    }
+
+    setTimeout(() => {
+      sessionStorage.removeItem("createClass");
+    }, 1000);
+  }, []);
+
   // Socket event
   useEffect(() => {
     socket.connect();
@@ -103,10 +117,12 @@ const HomePage = () => {
     if (e.domEvent.target.textContent === "Trang chủ") {
       navigate("/home");
       document.title = "Slearninglab | Trang chủ";
+      setNavContentDefault(1);
     }
     if (e.domEvent.target.textContent === "Lớp học") {
       navigate("/home/classes");
       document.title = "Slearninglab | Lớp học";
+      setNavContentDefault(2);
     }
   };
 
@@ -119,6 +135,7 @@ const HomePage = () => {
 
   return (
     <>
+      <ToastContainer position="bottom-left" theme="colored" />
       {isLogin ? (
         <ConfigProvider
           theme={{
@@ -132,6 +149,7 @@ const HomePage = () => {
               Sider={Sider}
               isDarkMode={isDarkMode}
               navContentDefault={navContentDefault}
+              setNavContentDefault={setNavContentDefault}
               items={items}
               onClick={onClick}
             />
