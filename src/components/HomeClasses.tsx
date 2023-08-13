@@ -13,7 +13,7 @@ import ClassPage from "../pages/ClassPage";
 
 import {
   getClassByUsername,
-  getAllClasses,
+  getClassCanJoinByUsername,
   getClassJoinedByUsername,
 } from "../redux/reducers/class.reducer";
 import { ClassroomType } from "../types/class.type";
@@ -50,7 +50,7 @@ const HomeClasses = () => {
       dispatchAsync(getClassByUsername(username));
     }
     if (roles.includes("student")) {
-      dispatchAsync(getAllClasses());
+      dispatchAsync(getClassCanJoinByUsername(username));
       dispatchAsync(getClassJoinedByUsername(username));
     }
 

@@ -179,6 +179,37 @@ export const getAllClasses = createAsyncThunk(
   }
 );
 
+export const getClassCanJoinByUsername = createAsyncThunk(
+  "class/get_class_can_join_by_username",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (username: string, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/classroom/getClassCanJoinByUsername`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const acceptJoinClass = createAsyncThunk(
   "class/accept_join_class",
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -264,6 +295,12 @@ const classReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getClassJoinedByUsername.rejected, (state) => {
       state.isGettingJoined = false;
+    })
+    .addCase(getClassCanJoinByUsername.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.studentClassList = action.payload;
+      }
+      state.isGettingClass = false;
     });
 });
 
