@@ -90,6 +90,9 @@ const HomeClasses = () => {
             {roles.includes("student") && studentJoinedList.length === 0 && (
               <Empty description="Bạn chưa đăng ký lớp học nào" />
             )}
+            {roles.includes("teacher") && teacherClassList.length === 0 && (
+              <Empty description="Bạn chưa tạo lớp học nào" />
+            )}
             {roles.includes("student") && isGettingClass ? (
               <div className="my-16">
                 <LoadingCpm />
@@ -120,6 +123,9 @@ const HomeClasses = () => {
               <p className="text-2xl font-bold my-6">
                 Danh sách lớp học có thể đăng ký:
               </p>
+            )}
+            {roles.includes("student") && studentClassList.length === 0 && (
+              <Empty description="Không có lớp học để đăng ký" />
             )}
             {roles.includes("teacher") && isGettingClass ? (
               <div className="my-10">

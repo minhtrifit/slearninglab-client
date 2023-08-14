@@ -20,6 +20,13 @@ export const StartListeners = (socket: any, dispatch: any) => {
       payload: rs,
     });
   });
+
+  socket.on("accept_join_class_notification", (rs: any) => {
+    dispatch({
+      type: "update_notification",
+      payload: rs,
+    });
+  });
 };
 
 // Send event to socket
@@ -50,6 +57,27 @@ export const SendJoinClassRequest = async (
     },
     (checkRequest: boolean) => {
       console.log("Check send class join request:", checkRequest);
+    }
+  );
+};
+
+export const acceptJoinClassRequest = async (
+  socket: any,
+  userJoinedUsername: string,
+  teacherUsername: string,
+  className: string,
+  classId: string
+) => {
+  socket.emit(
+    "accept_join_class_request",
+    {
+      userJoinedUsername: userJoinedUsername,
+      teacherUsername: teacherUsername,
+      className: className,
+      classId: classId,
+    },
+    (checkRequest: boolean) => {
+      console.log("Check send accept join class:", checkRequest);
     }
   );
 };
