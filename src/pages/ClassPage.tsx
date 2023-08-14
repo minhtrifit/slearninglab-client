@@ -15,6 +15,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { getClassInfoById } from "../redux/reducers/class.reducer";
 
+import ClassExam from "../components/ClassExam";
+
 const tabItems: any[] = [
   {
     label: (
@@ -24,7 +26,7 @@ const tabItems: any[] = [
       </span>
     ),
     key: 1,
-    children: <div>1</div>,
+    children: <ClassExam />,
   },
   {
     label: (
