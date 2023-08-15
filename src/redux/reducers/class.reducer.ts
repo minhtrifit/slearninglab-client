@@ -266,7 +266,7 @@ const classReducer = createReducer(initialState, (builder) => {
       state.isGettingClass = false;
     })
     .addCase(getClassInfoById.fulfilled, (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       if (action.payload) {
         state.detailClass = action.payload;
       }

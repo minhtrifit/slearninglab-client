@@ -10,7 +10,7 @@ interface PropType {
 }
 
 const ExamAnswerAmount = (props: PropType) => {
-  const { Form, name, restField, questionAmount } = props;
+  const { Form, name, restField } = props;
 
   const [answerAmountArray, setAnswerAmountArray] = useState<any[]>([]);
 
@@ -29,12 +29,12 @@ const ExamAnswerAmount = (props: PropType) => {
   };
 
   return (
-    <div>
+    <div className="lg:w-[500px]">
       <Form.Item
         {...restField}
         name={[name, "answer amount"]}
         label="Số câu trả lời"
-        rules={[{ type: "number", min: 1, required: true }]}
+        rules={[{ type: "number", min: 2, required: true }]}
       >
         <InputNumber
           onChange={(e: any) => {
@@ -57,6 +57,16 @@ const ExamAnswerAmount = (props: PropType) => {
           </Form.Item>
         );
       })}
+      {answerAmountArray.length !== 0 && (
+        <Form.Item
+          {...restField}
+          name={[name, "correct"]}
+          label="Đáp án"
+          rules={[{ required: true, message: "Thiếu nội dung đáp án" }]}
+        >
+          <Input />
+        </Form.Item>
+      )}
     </div>
   );
 };

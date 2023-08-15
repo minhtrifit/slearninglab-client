@@ -206,7 +206,7 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(handleAccessToken.fulfilled, (state, action) => {
       if (action.payload && action.payload?.message === "Access token valid") {
-        console.log(action.payload);
+        // console.log(action.payload);
 
         state.id = action.payload.data.id;
         state.email = action.payload.data.email;

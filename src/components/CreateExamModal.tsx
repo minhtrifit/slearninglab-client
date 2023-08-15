@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Button, Form, Input, Space, Modal } from "antd";
+import { Button, Form, Input, Space, Modal, InputNumber } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
+import ExamUpload from "./ExamUpload";
 import ExamAnswerAmount from "./ExamAnswerAmount";
 
 interface PropType {
@@ -17,13 +19,21 @@ const CreateExamModal = (props: PropType) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const onFinish = (values: any) => {
+    // eslint-disable-next-line no-var
+    for (var i = 0; i < values.questions.length; ++i) {
+      values.questions[i].image = values.questions[i].image.fileList;
+    }
+
     console.log("Received values of form:", values);
 
-    // setConfirmLoading(true);
-    // setTimeout(() => {
-    //   setOpenExamModal(false);
-    //   setConfirmLoading(false);
-    // }, 2000);
+    if (values?.questions?.length === 0) toast.error("Vui lòng nhập câu hỏi");
+    else {
+      // setConfirmLoading(true);
+      // setTimeout(() => {
+      //   setOpenExamModal(false);
+      //   setConfirmLoading(false);
+      // }, 2000);
+    }
   };
 
   const handleCancel = () => {
@@ -51,6 +61,21 @@ const CreateExamModal = (props: PropType) => {
           //   style={{ maxWidth: 600 }}
           autoComplete="off"
         >
+          <Form.Item
+            name={["exam", "name"]}
+            label="Tên bài thi"
+            rules={[{ required: true, message: "Thiếu tên bài thi" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["exam", "time"]}
+            label="Thời gian làm bài (phút)"
+            rules={[{ type: "number", min: 1, required: true }]}
+          >
+            <InputNumber />
+          </Form.Item>
+
           <Form.List name="questions">
             {(fields, { add, remove }) => (
               <>
@@ -65,7 +90,9 @@ const CreateExamModal = (props: PropType) => {
                     className="my-10"
                   >
                     <Space className="flex flex-col items-start">
+                      <p className="text-md font-bold">Câu hỏi {name + 1}:</p>
                       <Form.Item
+                        className="lg:w-[500px]"
                         {...restField}
                         name={[name, "title"]}
                         label="Nội dung câu hỏi"
@@ -75,6 +102,11 @@ const CreateExamModal = (props: PropType) => {
                       >
                         <Input />
                       </Form.Item>
+                      <ExamUpload
+                        Form={Form}
+                        name={name}
+                        restField={restField}
+                      />
                       <ExamAnswerAmount
                         Form={Form}
                         name={name}
