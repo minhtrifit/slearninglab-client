@@ -32,7 +32,7 @@ const ExamAnswerAmount = (props: PropType) => {
     <div className="lg:w-[500px]">
       <Form.Item
         {...restField}
-        name={[name, "answer amount"]}
+        name={[name, "amount"]}
         label="Số câu trả lời"
         rules={[{ type: "number", min: 2, required: true }]}
       >
@@ -49,7 +49,7 @@ const ExamAnswerAmount = (props: PropType) => {
           <Form.Item
             key={uid}
             {...restField}
-            name={[name, `ans ${item}`]}
+            name={[name, `ans${item}`]}
             label="Nội dung câu trả lời"
             rules={[{ required: true, message: "Thiếu nội dung câu hỏi" }]}
           >

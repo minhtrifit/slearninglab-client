@@ -2,9 +2,18 @@ import { useState } from "react";
 import { Button, Form, Input, Space, Modal, InputNumber } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch } from "../redux/hooks/hooks";
+import { RootState } from "../redux/store";
+
+import { ExamType, QuestionType } from "../types/exam.type";
 
 import ExamUpload from "./ExamUpload";
 import ExamAnswerAmount from "./ExamAnswerAmount";
+
+import { createExam } from "../redux/reducers/exam.reducer";
+
+import { ClassroomType } from "../types/class.type";
 
 interface PropType {
   openExamModal: boolean;
@@ -18,21 +27,68 @@ const CreateExamModal = (props: PropType) => {
   const [questionAmount, setQuestionAmount] = useState(0);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const onFinish = (values: any) => {
+  const dispatchAsync = useAppDispatch();
+
+  const detailClass = useSelector<RootState, ClassroomType | null>(
+    (state) => state.class.detailClass
+  );
+
+  const onFinish = async (values: any) => {
     // eslint-disable-next-line no-var
     for (var i = 0; i < values.questions.length; ++i) {
       values.questions[i].image = values.questions[i].image.fileList;
     }
 
-    console.log("Received values of form:", values);
+    // console.log("Received values of form:", values);
 
     if (values?.questions?.length === 0) toast.error("Vui lòng nhập câu hỏi");
     else {
-      // setConfirmLoading(true);
-      // setTimeout(() => {
-      //   setOpenExamModal(false);
-      //   setConfirmLoading(false);
-      // }, 2000);
+      const examData: ExamType = {
+        exam: {
+          examName: values?.exam?.name,
+          time: values?.exam?.time,
+          classId: detailClass?.id,
+        },
+        question: [],
+      };
+
+      // eslint-disable-next-line no-var
+      for (var i = 0; i < values?.questions.length; ++i) {
+        const questionData: QuestionType = {
+          title: values?.questions[i].title,
+          amount: values?.questions[i].amount,
+          ans: [],
+          correct: values?.questions[i].correct,
+          img: [],
+        };
+
+        for (const [key, value] of Object.entries(values?.questions[i])) {
+          if (key.includes("ans")) {
+            questionData.ans.push(value);
+          }
+        }
+
+        // eslint-disable-next-line no-var
+        for (var j = 0; j < values?.questions[i]?.image.length; ++j) {
+          questionData.img.push(values?.questions[i]?.image[j].url);
+        }
+
+        examData.question.push(questionData);
+      }
+
+      setConfirmLoading(true);
+
+      const rs = await dispatchAsync(createExam(examData));
+
+      if (rs.type === "exam/create_exam/fulfilled") {
+        sessionStorage.setItem("createExam", "true");
+      } else {
+        sessionStorage.setItem("createExam", "false");
+      }
+
+      setOpenExamModal(false);
+      setConfirmLoading(false);
+      window.location.reload();
     }
   };
 

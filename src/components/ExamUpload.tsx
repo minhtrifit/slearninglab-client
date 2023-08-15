@@ -57,7 +57,7 @@ const ExamUpload = (propsValue: PropType) => {
     multiple: true,
   };
   return (
-    <Form.Item {...restField} name={[name, "image"]}>
+    <Form.Item {...restField} label="Hình ảnh minh họa" name={[name, "image"]}>
       <Upload
         {...props}
         fileList={fileList}
@@ -66,7 +66,7 @@ const ExamUpload = (propsValue: PropType) => {
           handleChange(info);
         }}
       >
-        <Button icon={<UploadOutlined />}>Upload</Button>
+        <Button icon={<UploadOutlined />}>Tải ảnh lên</Button>
       </Upload>
     </Form.Item>
   );

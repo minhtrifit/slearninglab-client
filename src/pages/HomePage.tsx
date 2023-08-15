@@ -77,6 +77,19 @@ const HomePage = () => {
     }, 1000);
   }, []);
 
+  useEffect(() => {
+    const createClass = sessionStorage.getItem("createExam");
+    if (createClass === "true") {
+      toast.success("Tạo bài thi thành công");
+    } else if (createClass === "false") {
+      toast.error("Tạo bài thi thất bại");
+    }
+
+    setTimeout(() => {
+      sessionStorage.removeItem("createExam");
+    }, 1000);
+  }, []);
+
   // Socket event
   useEffect(() => {
     socket.connect();
