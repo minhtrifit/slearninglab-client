@@ -1,13 +1,22 @@
 export interface QuestionType {
   title: string;
   amount: number;
-  ans: unknown[];
+  ans: any[];
   correct: string;
+  img: string[];
+}
+
+export interface QuestionTypeNonAns {
+  id?: string;
+  title: string;
+  amount: number;
+  ans: any[];
   img: string[];
 }
 
 export interface ExamType {
   exam: {
+    id?: string;
     examName: string;
     time: number;
     classId: string | undefined;
@@ -20,4 +29,14 @@ export interface ExamInfo {
   examName: string;
   time: number;
   classId: string;
+}
+
+export interface ExamTypeNonAns {
+  exam: {
+    id?: string;
+    examName: string;
+    time: number;
+    classId: string | undefined;
+  };
+  question: QuestionTypeNonAns[];
 }

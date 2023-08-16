@@ -65,6 +65,10 @@ const HomePage = () => {
   // }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const createClass = sessionStorage.getItem("createClass");
     if (createClass === "true") {
       toast.success("Tạo lớp học thành công");
@@ -119,6 +123,17 @@ const HomePage = () => {
       sessionStorage.setItem("mode", "false");
       setIsDarkMode(false);
     }
+  }, []);
+
+  // Exam result event
+  useEffect(() => {
+    const checkResult: string | null = sessionStorage.getItem("examResult");
+    if (checkResult === "true" && checkResult !== null) {
+      toast.success("Nộp bài thành công");
+    } else if (checkResult === "false" && checkResult !== null) {
+      toast.error("Nộp bài thất bại");
+    }
+    sessionStorage.removeItem("examResult");
   }, []);
 
   const switchMode = (_checked: boolean) => {

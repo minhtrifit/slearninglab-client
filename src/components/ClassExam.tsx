@@ -58,7 +58,7 @@ const ClassExam = () => {
       {examList.length === 0 && (
         <Empty className="mt-20" description="Chưa có bài thi" />
       )}
-      {examList.length !== 0 && roles.includes("teacher") && <ExamList />}
+      {examList.length !== 0 && <ExamList />}
     </div>
   );
 };
