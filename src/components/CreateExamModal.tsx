@@ -36,7 +36,9 @@ const CreateExamModal = (props: PropType) => {
   const onFinish = async (values: any) => {
     // eslint-disable-next-line no-var
     for (var i = 0; i < values.questions.length; ++i) {
-      values.questions[i].image = values.questions[i].image.fileList;
+      if (values.questions[i].image?.fileList !== undefined) {
+        values.questions[i].image = values.questions[i].image?.fileList;
+      }
     }
 
     // console.log("Received values of form:", values);
@@ -68,9 +70,11 @@ const CreateExamModal = (props: PropType) => {
           }
         }
 
-        // eslint-disable-next-line no-var
-        for (var j = 0; j < values?.questions[i]?.image.length; ++j) {
-          questionData.img.push(values?.questions[i]?.image[j].url);
+        if (values?.questions[i]?.image?.length !== 0) {
+          // eslint-disable-next-line no-var
+          for (var j = 0; j < values?.questions[i]?.image?.length; ++j) {
+            questionData.img.push(values?.questions[i]?.image[j].url);
+          }
         }
 
         examData.question.push(questionData);
