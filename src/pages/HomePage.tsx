@@ -68,30 +68,33 @@ const HomePage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    const createClass = sessionStorage.getItem("createClass");
-    if (createClass === "true") {
-      toast.success("Tạo lớp học thành công");
-    } else if (createClass === "false") {
-      toast.error("Tạo lớp học thất bại");
-    }
+  // useEffect(() => {
+  //   const createClass = sessionStorage.getItem("createClass");
+  //   if (createClass === "true") {
+  //     toast.success("Tạo lớp học thành công");
+  //   } else if (createClass === "false") {
+  //     toast.error("Tạo lớp học thất bại");
+  //   }
 
-    setTimeout(() => {
-      sessionStorage.removeItem("createClass");
-    }, 1000);
-  }, []);
+  //   setTimeout(() => {
+  //     sessionStorage.removeItem("createClass");
+  //   }, 1000);
+  // }, []);
 
   useEffect(() => {
     const createClass = sessionStorage.getItem("createExam");
     if (createClass === "true") {
       toast.success("Tạo bài thi thành công");
+      navigate("/home/classes");
     } else if (createClass === "false") {
       toast.error("Tạo bài thi thất bại");
+      navigate("/home/classes");
     }
 
     setTimeout(() => {
       sessionStorage.removeItem("createExam");
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Socket event
@@ -123,17 +126,6 @@ const HomePage = () => {
       sessionStorage.setItem("mode", "false");
       setIsDarkMode(false);
     }
-  }, []);
-
-  // Exam result event
-  useEffect(() => {
-    const checkResult: string | null = sessionStorage.getItem("examResult");
-    if (checkResult === "true" && checkResult !== null) {
-      toast.success("Nộp bài thành công");
-    } else if (checkResult === "false" && checkResult !== null) {
-      toast.error("Nộp bài thất bại");
-    }
-    sessionStorage.removeItem("examResult");
   }, []);
 
   const switchMode = (_checked: boolean) => {

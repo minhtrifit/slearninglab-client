@@ -1,5 +1,10 @@
 import { createReducer, createAsyncThunk } from "@reduxjs/toolkit";
-import { ExamType, ExamInfo, ExamTypeNonAns } from "../../types/exam.type";
+import {
+  ExamType,
+  ExamInfo,
+  ExamTypeNonAns,
+  ResultType,
+} from "../../types/exam.type";
 import axios from "axios";
 
 import { findExam } from "../actions/exam.action";
@@ -7,23 +12,27 @@ import { findExam } from "../actions/exam.action";
 // Interface declair
 interface ExamState {
   isCreating: boolean;
+  isDeleting: boolean;
   isLoading: boolean;
   examList: ExamInfo[];
   detailExam: ExamType | undefined;
   findExamList: ExamInfo[];
   detailExamNonAns: ExamTypeNonAns | undefined;
   isSubmitting: boolean;
+  getResult: ResultType | undefined;
 }
 
 // InitialState value
 const initialState: ExamState = {
   isCreating: false,
+  isDeleting: false,
   isLoading: false,
   examList: [],
   detailExam: undefined,
   findExamList: [],
   detailExamNonAns: undefined,
   isSubmitting: false,
+  getResult: undefined,
 };
 
 // createAsyncThunk middleware
@@ -42,6 +51,37 @@ export const createExam = createAsyncThunk(
         `${import.meta.env.VITE_API_URL}/exam/createExam`,
         {
           body: exam,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteExam = createAsyncThunk(
+  "exam/delete_exam",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (examId: string, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/exam/deleteExam`,
+        {
+          body: { examId: examId },
         },
         {
           headers: {
@@ -232,6 +272,7 @@ const examReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getDetailExamNonAnsById.pending, (state) => {
       state.isLoading = true;
+      state.getResult = undefined;
     })
     .addCase(getDetailExamNonAnsById.fulfilled, (state, action) => {
       if (action.payload) {
@@ -242,15 +283,29 @@ const examReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getDetailExamNonAnsById.rejected, (state) => {
       state.isLoading = false;
+      state.getResult = undefined;
     })
     .addCase(submitExam.pending, (state) => {
       state.isSubmitting = true;
     })
-    .addCase(submitExam.fulfilled, (state) => {
+    .addCase(submitExam.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.getResult = action.payload;
+        // console.log(state.getResult);
+      }
       state.isSubmitting = false;
     })
     .addCase(submitExam.rejected, (state) => {
       state.isSubmitting = false;
+    })
+    .addCase(deleteExam.pending, (state) => {
+      state.isDeleting = true;
+    })
+    .addCase(deleteExam.fulfilled, (state) => {
+      state.isDeleting = false;
+    })
+    .addCase(deleteExam.rejected, (state) => {
+      state.isDeleting = false;
     });
 });
 

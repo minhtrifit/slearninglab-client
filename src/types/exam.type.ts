@@ -40,3 +40,13 @@ export interface ExamTypeNonAns {
   };
   question: QuestionTypeNonAns[];
 }
+
+export interface ResultType {
+  usernameId: string;
+  classId: string;
+  examId: string;
+  examName: string;
+  amount: number;
+  result: number;
+  date: Date;
+}

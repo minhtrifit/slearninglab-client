@@ -79,6 +79,17 @@ const ClassPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Exam result event
+  useEffect(() => {
+    const checkResult: string | null = sessionStorage.getItem("examResult");
+    if (checkResult === "true" && checkResult !== null) {
+      toast.success("Nộp bài thành công");
+    } else if (checkResult === "false" && checkResult !== null) {
+      toast.error("Nộp bài thất bại");
+    }
+    sessionStorage.removeItem("examResult");
+  }, []);
+
   return (
     <div className="min-h-[900px]">
       {/* <ToastContainer position="bottom-left" theme="colored" /> */}

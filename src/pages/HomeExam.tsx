@@ -21,6 +21,7 @@ import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Loading from "../components/Loading";
 import LoadingCpm from "../components/LoadingCpm";
@@ -28,7 +29,10 @@ import LoadingCpm from "../components/LoadingCpm";
 import HomeFooter from "../components/HomeFooter";
 import { useTitle } from "../hooks/useTitle";
 
-import { ExamTypeNonAns } from "../types/exam.type";
+import { ExamTypeNonAns, ResultType } from "../types/exam.type";
+import { ClassroomType } from "../types/class.type";
+
+import { transformDate } from "../helpers/transform";
 
 import {
   getDetailExamNonAnsById,
@@ -52,6 +56,14 @@ const HomeExam = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const username = useSelector<RootState, string>(
+    (state) => state.user.username
+  );
+
+  const detailClass = useSelector<RootState, ClassroomType | null>(
+    (state) => state.class.detailClass
+  );
+
   const isLoading = useSelector<RootState, boolean>(
     (state) => state.exam.isLoading
   );
@@ -62,6 +74,10 @@ const HomeExam = () => {
 
   const detailExamNonAns = useSelector<RootState, ExamTypeNonAns | undefined>(
     (state) => state.exam.detailExamNonAns
+  );
+
+  const getResult = useSelector<RootState, ResultType | undefined>(
+    (state) => state.exam.getResult
   );
 
   useTitle("Slearninglab | Làm bài thi");
@@ -103,6 +119,7 @@ const HomeExam = () => {
 
   const handleSubmitExam = async (values: any) => {
     const examSubmitData: any = {
+      usernameId: username,
       classId: detailExamNonAns?.exam.classId,
       examId: detailExamNonAns?.exam.id,
       question: [],
@@ -118,10 +135,11 @@ const HomeExam = () => {
     const rs = await dispatchAsync(submitExam(examSubmitData));
 
     if (rs.type === "exam/submit_exam/fulfilled") {
-      console.log(rs.payload);
       sessionStorage.setItem("examResult", "true");
+    } else {
+      sessionStorage.setItem("examResult", "false");
+      navigate(`/home/classes/${detailClass?.id}`);
     }
-    navigate("/home");
   };
 
   return (
@@ -173,19 +191,21 @@ const HomeExam = () => {
             items={items}
           />
           <Space className="flex flex-col mt-20">
-            <Button
-              form="exam-form"
-              type="primary"
-              // htmlType="submit"
-              onClick={() => {
-                const text = "Xác nhận nộp bài ?";
-                if (confirm(text) === true) {
-                  formRef.current.submit();
-                }
-              }}
-            >
-              Nộp bài
-            </Button>
+            {getResult === undefined && (
+              <Button
+                form="exam-form"
+                type="primary"
+                // htmlType="submit"
+                onClick={() => {
+                  const text = "Xác nhận nộp bài ?";
+                  if (confirm(text) === true) {
+                    formRef.current.submit();
+                  }
+                }}
+              >
+                Nộp bài
+              </Button>
+            )}
             <div
               className={`${
                 !isDarkMode
@@ -193,7 +213,7 @@ const HomeExam = () => {
                   : "text-3xl mt-16 text-white"
               }`}
             >
-              {detailExamNonAns?.exam.time && (
+              {detailExamNonAns?.exam.time && getResult === undefined && (
                 <Countdown
                   date={Date.now() + detailExamNonAns?.exam.time * 60 * 1000}
                   daysInHours={true}
@@ -237,7 +257,7 @@ const HomeExam = () => {
               >
                 <LoadingCpm />
               </div>
-            ) : (
+            ) : getResult === undefined ? (
               <div
                 className={`${isDarkMode ? "bg-zinc-800" : ""}`}
                 style={{
@@ -323,6 +343,74 @@ const HomeExam = () => {
                     </Form>
                   </Space>
                 )}
+              </div>
+            ) : (
+              <div className="min-h-[850px] pt-40 w-[90%] sm:w-[80%] xl:w-[40%] mx-auto">
+                <Space className="flex flex-col">
+                  <div className="w-[250px] mb-10">
+                    <img
+                      src="../assets/result.png"
+                      alt="result"
+                      className="w-[100%]"
+                    />
+                  </div>
+                  <div>
+                    <p
+                      className={
+                        isDarkMode
+                          ? "text-white text-2xl"
+                          : "text-black text-2xl"
+                      }
+                    >
+                      Tên thí sinh: {getResult.usernameId}
+                    </p>
+                    <p
+                      className={
+                        isDarkMode
+                          ? "text-white text-2xl"
+                          : "text-black text-2xl"
+                      }
+                    >
+                      Mã bài thi: {getResult.examId}
+                    </p>
+                    <p
+                      className={
+                        isDarkMode
+                          ? "text-white text-2xl"
+                          : "text-black text-2xl"
+                      }
+                    >
+                      Tên bài thi: {getResult.examName}
+                    </p>
+                    <p
+                      className={
+                        getResult.amount / getResult.result > 2
+                          ? "text-red-500 font-bold text-2xl"
+                          : "text-green-500 font-bold text-2xl"
+                      }
+                    >
+                      Kết quả: {getResult.result} / {getResult.amount}
+                    </p>
+                    <p
+                      className={
+                        isDarkMode
+                          ? "text-white text-2xl"
+                          : "text-black text-2xl"
+                      }
+                    >
+                      Ngày thi: {transformDate(getResult.date)}
+                    </p>
+                  </div>
+                  <Button
+                    className="mt-16"
+                    type="primary"
+                    onClick={() => {
+                      navigate(`/home/classes/${detailClass?.id}`);
+                    }}
+                  >
+                    Xác nhận
+                  </Button>
+                </Space>
               </div>
             )}
           </Content>

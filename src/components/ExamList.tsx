@@ -5,12 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import ExamDetail from "./ExamDetail";
 
+import { ClassroomType } from "../types/class.type";
 import { ExamInfo } from "../types/exam.type";
 
-import { getDetailExamById } from "../redux/reducers/exam.reducer";
+import {
+  getDetailExamById,
+  deleteExam,
+  getExamByClassId,
+} from "../redux/reducers/exam.reducer";
 
 interface DataType {
   key: number;
@@ -32,6 +38,9 @@ const ExamList = () => {
   const navigate = useNavigate();
 
   const roles = useSelector<RootState, string[]>((state) => state.user.roles);
+  const detailClass = useSelector<RootState, ClassroomType | null>(
+    (state) => state.class.detailClass
+  );
 
   const data: DataType[] = [];
 
@@ -66,7 +75,24 @@ const ExamList = () => {
           >
             Xem chi tiết
           </Button>
-          <Button type="primary" danger>
+          <Button
+            type="primary"
+            danger
+            onClick={async () => {
+              const text = "Bạn có chắc muốn xóa bài thi ?";
+
+              if (confirm(text) === true) {
+                const rs = await dispatchAsync(deleteExam(record.id));
+
+                if (rs.type === "exam/delete_exam/fulfilled") {
+                  toast.success("Xóa bài thi thành công");
+                } else {
+                  toast.error("Xóa bài thi thất bại");
+                }
+                dispatchAsync(getExamByClassId(detailClass?.id));
+              }
+            }}
+          >
             Xóa bài thi
           </Button>
         </Space>

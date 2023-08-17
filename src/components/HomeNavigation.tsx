@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Menu, MenuProps } from "antd";
 import { RedditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -20,6 +21,17 @@ const HomeNavigation = (props: propType) => {
     items,
     onClick,
   } = props;
+
+  const [navValue, setNavValue] = useState("");
+  const url = window.location.href;
+
+  useEffect(() => {
+    if (url.includes("/classes")) {
+      setNavValue("2");
+    } else {
+      setNavValue("1");
+    }
+  }, [url]);
 
   return (
     <Sider
@@ -64,7 +76,7 @@ const HomeNavigation = (props: propType) => {
         defaultSelectedKeys={["1"]}
         items={items}
         onClick={onClick}
-        selectedKeys={[`${navContentDefault}`]}
+        selectedKeys={[navValue]}
       />
     </Sider>
   );

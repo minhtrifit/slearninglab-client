@@ -5,10 +5,14 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import { ClassroomType } from "../types/class.type";
 
-import { createClassroom } from "../redux/reducers/class.reducer";
+import {
+  createClassroom,
+  getClassByUsername,
+} from "../redux/reducers/class.reducer";
 
 import { classImage } from "../utils/image";
 
@@ -37,6 +41,7 @@ const CreateClassModal = (props: PropType) => {
   const { openCreateClassModal, setOpenCreateClassModal } = props;
 
   const dispatchAsync = useAppDispatch();
+  const navigate = useNavigate();
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [className, setClassName] = useState<any>();
@@ -72,14 +77,18 @@ const CreateClassModal = (props: PropType) => {
     const rs = await dispatchAsync(createClassroom(classData));
 
     if (rs.type === "user/register_account/rejected") {
-      sessionStorage.setItem("createClass", "false");
+      // sessionStorage.setItem("createClass", "false");
+      toast.error("Tạo lớp học thất bại");
     } else {
-      sessionStorage.setItem("createClass", "true");
+      // sessionStorage.setItem("createClass", "true");
+      toast.success("Tạo lớp học thành công");
+      dispatchAsync(getClassByUsername(username));
     }
 
     setOpenCreateClassModal(false);
     setConfirmLoading(false);
-    window.location.reload();
+    navigate("/home/classes");
+    // window.location.reload();
   };
 
   const handleCancel = () => {
