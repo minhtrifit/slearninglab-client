@@ -11,3 +11,10 @@ export const transformDate = (value: Date) => {
 
   return formatted;
 };
+
+export const reformatDate = (dateStr: any) => {
+  const d = new Date();
+  const dArr = dateStr.split("-"); // ex input: "2010-01-18"
+  const year = d.getFullYear();
+  return dArr[2] + "/" + dArr[1] + "/" + year.toString(); //ex output: "18/01/10"
+};

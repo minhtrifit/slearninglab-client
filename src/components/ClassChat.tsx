@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
-import { Avatar, Space, Form, Button, Input } from "antd";
+import { Avatar, Space, Form, Button, Input, Empty } from "antd";
 
 import { v4 } from "uuid";
 
@@ -39,7 +39,7 @@ const ClassChat = () => {
   );
 
   useEffect(() => {
-    console.log("Update chat");
+    // console.log("Update chat");
     getAllChatByRoom(socket, detailClass?.id, dispatch);
     setIsSend(false);
 
@@ -80,10 +80,9 @@ const ClassChat = () => {
     <div className="flex flex-col items-center" ref={ref}>
       <Space
         size="large"
-        className="border-[1px] border-gray-300 border-solid rounded-md p-5 max-h-[600px] overflow-y-auto flex flex-col items-stretch w-[80%] mx-auto my-20"
+        className="border-[1px] border-gray-300 border-solid rounded-md p-5 min-h-[300px] max-h-[600px] overflow-y-auto flex flex-col items-stretch w-[80%] mx-auto my-20"
       >
-        {Array.isArray(messageList) &&
-          messageList?.length !== 0 &&
+        {Array.isArray(messageList) && messageList?.length !== 0 ? (
           messageList?.map((mess) => {
             const uid = v4();
             return (
@@ -101,7 +100,10 @@ const ClassChat = () => {
                 <div ref={mainRef} />
               </Space>
             );
-          })}
+          })
+        ) : (
+          <Empty className="my-20" description="Bắt đầu đoạn chat" />
+        )}
       </Space>
       <div className="w-[80%] flex flex-col items-end">
         <Form

@@ -308,7 +308,7 @@ const classReducer = createReducer(initialState, (builder) => {
       state.isGettingClass = false;
     })
     .addCase(updateChatList, (state, action: any) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       if (
         typeof action.payload === "object" &&
         !Array.isArray(action.payload) &&
