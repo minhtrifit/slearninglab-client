@@ -62,7 +62,9 @@ const ExamDetail = (props: PropType) => {
                 {question.img.length !== 0 && (
                   <Space>
                     {question.img.map((img) => {
-                      return <Image width={200} src={img} />;
+                      const uid2 = v4();
+
+                      return <Image key={uid2} width={200} src={img} />;
                     })}
                   </Space>
                 )}

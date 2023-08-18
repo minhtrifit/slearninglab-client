@@ -1,7 +1,10 @@
 import { createReducer, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import { updateChatList } from "../actions/class.action";
+
 import { ClassroomType } from "../../types/class.type";
+import { Message } from "../../types/chat.type";
 
 // Interface declair
 interface ClassState {
@@ -12,6 +15,7 @@ interface ClassState {
   studentClassList: ClassroomType[];
   studentJoinedList: ClassroomType[];
   detailClass: ClassroomType | null;
+  messageList: Message[] | undefined;
 }
 
 // InitialState value
@@ -23,6 +27,7 @@ const initialState: ClassState = {
   studentClassList: [],
   studentJoinedList: [],
   detailClass: null,
+  messageList: [],
 };
 
 // createAsyncThunk middleware
@@ -301,6 +306,18 @@ const classReducer = createReducer(initialState, (builder) => {
         state.studentClassList = action.payload;
       }
       state.isGettingClass = false;
+    })
+    .addCase(updateChatList, (state, action: any) => {
+      console.log(action.payload);
+      if (
+        typeof action.payload === "object" &&
+        !Array.isArray(action.payload) &&
+        action.payload !== null
+      ) {
+        state.messageList?.push(action.payload);
+      } else {
+        state.messageList = action.payload;
+      }
     });
 });
 

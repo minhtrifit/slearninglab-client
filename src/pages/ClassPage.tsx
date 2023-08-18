@@ -12,10 +12,14 @@ import { ClassroomType } from "../types/class.type";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { Socket } from "socket.io-client";
 
 import { getClassInfoById } from "../redux/reducers/class.reducer";
 
 import ClassExam from "../components/ClassExam";
+import ClassChat from "../components/ClassChat";
+
+import { joinClassChat } from "../helpers/socket";
 
 const tabItems: any[] = [
   {
@@ -36,7 +40,7 @@ const tabItems: any[] = [
       </span>
     ),
     key: 2,
-    children: <div>2</div>,
+    children: <ClassChat />,
   },
   {
     label: (
@@ -55,6 +59,10 @@ const ClassPage = () => {
 
   const dispatchAsync = useAppDispatch();
   const navigate = useNavigate();
+
+  const socket = useSelector<RootState, Socket | undefined>(
+    (state) => state.socket.socket
+  );
 
   const detailClass = useSelector<RootState, ClassroomType | null>(
     (state) => state.class.detailClass
@@ -89,6 +97,13 @@ const ClassPage = () => {
     }
     sessionStorage.removeItem("examResult");
   }, []);
+
+  useEffect(() => {
+    if (username !== undefined && detailClass?.id !== undefined)
+      joinClassChat(socket, username, detailClass?.id);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username, detailClass]);
 
   return (
     <div className="min-h-[900px]">

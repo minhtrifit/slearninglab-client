@@ -40,8 +40,12 @@ const ClassJoinCard = (props: PropType) => {
 
   return (
     <Card
-      className="w-[250px] lg:w-[300px]"
-      cover={<img alt="example" src={img} />}
+      className="w-[250px]"
+      cover={
+        <div className="w-[100%] h-[200px]">
+          <img alt="example" src={img} className="w-[100%] object-cover" />
+        </div>
+      }
       actions={[
         <MenuOutlined
           key="detail"
