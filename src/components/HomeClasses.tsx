@@ -33,6 +33,10 @@ const HomeClasses = () => {
 
   const dispatchAsync = useAppDispatch();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const roles = useSelector<RootState, string[]>((state) => state.user.roles);
   const username = useSelector<RootState, string>(
     (state) => state.user.username
@@ -143,7 +147,7 @@ const HomeClasses = () => {
                         },
                       }}
                       modules={[Pagination]}
-                      className="w-[300px] md:w-[550px] lg:w-[800px]"
+                      className="w-[300px] h-[420px] md:w-[550px] lg:w-[800px]"
                     >
                       {studentJoinedList.map((value: ClassroomType) => {
                         return (
@@ -227,7 +231,7 @@ const HomeClasses = () => {
                         },
                       }}
                       modules={[Pagination]}
-                      className="w-[300px] md:w-[550px] lg:w-[800px]"
+                      className="w-[300px] h-[420px] md:w-[550px] lg:w-[800px]"
                     >
                       {teacherClassList.map((value: ClassroomType) => {
                         return (
@@ -298,7 +302,7 @@ const HomeClasses = () => {
                         },
                       }}
                       modules={[Pagination]}
-                      className="w-[300px] md:w-[550px] lg:w-[800px]"
+                      className="w-[300px] h-[420px] md:w-[550px] lg:w-[800px]"
                     >
                       {studentClassList.map((value: ClassroomType) => {
                         return (

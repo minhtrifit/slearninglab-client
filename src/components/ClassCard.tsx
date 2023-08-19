@@ -77,7 +77,11 @@ const ClassCard = (props: PropType) => {
         className="w-[250px]"
         cover={
           <div className="w-[100%] h-[200px]">
-            <img alt="example" src={img} className="w-[100%] object-cover" />
+            <img
+              alt="example"
+              src={img}
+              className="w-[100%] object-cover border-2 border-solid border-gray-200"
+            />
           </div>
         }
         actions={[

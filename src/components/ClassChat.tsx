@@ -80,7 +80,7 @@ const ClassChat = () => {
     <div className="flex flex-col items-center" ref={ref}>
       <Space
         size="large"
-        className="border-[1px] border-gray-300 border-solid rounded-md p-5 min-h-[300px] max-h-[600px] overflow-y-auto flex flex-col items-stretch w-[80%] mx-auto my-20"
+        className="border-[1px] border-gray-300 border-solid rounded-md p-5 min-h-[500px] max-h-[500px] overflow-y-auto flex flex-col items-stretch w-[80%] mx-auto my-20"
       >
         {Array.isArray(messageList) && messageList?.length !== 0 ? (
           messageList?.map((mess) => {
