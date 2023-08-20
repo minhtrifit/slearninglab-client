@@ -12,6 +12,10 @@ export const transformDate = (value: Date) => {
   return formatted;
 };
 
+export const transformDate2 = (value: Date) => {
+  return value.toISOString().split("T")[0];
+};
+
 export const reformatDate = (dateStr: any) => {
   const d = new Date();
   const dArr = dateStr.split("-"); // ex input: "2010-01-18"

@@ -127,7 +127,7 @@ const TaskList = (props: PropType) => {
   );
 
   return (
-    <div>
+    <div className="">
       <div className="flex justify-end py-5">
         <Button
           type="primary"

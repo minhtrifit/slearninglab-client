@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 
 import TaskList from "./TaskList";
+import UserCalendar from "./UserCalender";
 
 interface PropType {
   isDarkMode: boolean;
@@ -77,13 +78,17 @@ const HomeDashboard = (props: PropType) => {
           </Space>
         </Space>
       </Space>
+      <UserCalendar />
       <Space
         size="large"
         className="mx-auto my-40 flex flex-col w-[100%] lg:w-[80%]"
       >
-        <p className="text-2xl font-bold mb-5">
-          Ghi chú tiến trình học tập của bạn:
-        </p>
+        <div className="w-[65vw]">
+          <p className="text-2xl font-bold mb-5">
+            Ghi chú tiến trình học tập của bạn:
+          </p>
+          <p>Đừng bỏ lỡ sự kiện nào quan trọng!</p>
+        </div>
         <TaskList isDarkMode={isDarkMode} />
       </Space>
     </div>
