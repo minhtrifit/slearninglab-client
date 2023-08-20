@@ -1,11 +1,11 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { Task } from "../../types/task.type";
-
-import { updateTaskList } from "../actions/task.action";
 
 // Interface declair
 interface TaskState {
   taskList: Task[];
+  isSaving: boolean;
 }
 
 // InitialState value
@@ -32,14 +32,83 @@ const initialState: TaskState = {
       content: "Làm test 3",
     },
   ],
+  isSaving: false,
 };
 
-const taskReducer = createReducer(initialState, (builder) => {
-  builder.addCase(updateTaskList, (state, action) => {
-    if (action.payload) {
-      state.taskList = action.payload;
+// createAsyncThunk middleware
+export const updateTaskList = createAsyncThunk(
+  "task/update_task_list",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (data: { taskList: Task[]; username: string }, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/task/updateTaskList`,
+        {
+          body: data,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
     }
-  });
+  }
+);
+
+export const getTaskByUsername = createAsyncThunk(
+  "task/get_task_by_username",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (username: string | undefined, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/task/getTaskByUsername`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+const taskReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(updateTaskList.pending, (state) => {
+      state.isSaving = true;
+    })
+    .addCase(updateTaskList.fulfilled, (state) => {
+      state.isSaving = false;
+    })
+    .addCase(updateTaskList.rejected, (state) => {
+      state.isSaving = false;
+    });
 });
 
 export default taskReducer;

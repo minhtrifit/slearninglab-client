@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Column, Id, Task } from "../types/task.type";
 import TaskListLane from "./TaskListLane";
 import { createPortal } from "react-dom";
@@ -16,7 +16,21 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import TaskListCard from "./TaskListCard";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { useAppDispatch } from "../redux/hooks/hooks";
 import { Button } from "antd";
+import { toast } from "react-toastify";
+import { v4 } from "uuid";
+
+import LoadingCpm from "./LoadingCpm";
+
+import {
+  updateTaskList,
+  getTaskByUsername,
+} from "../redux/reducers/task.reducer";
+
+interface PropType {
+  isDarkMode: boolean;
+}
 
 const defaultCols: Column[] = [
   {
@@ -58,20 +72,51 @@ const defaultTasks: Task[] = [
 
 const generateId = () => {
   /* Generate a random number between 0 and 10000 */
-  return Math.floor(Math.random() * 10001);
+  // return Math.floor(Math.random() * 10001);
+
+  const uid = v4();
+  return uid;
 };
 
-const TaskList = () => {
+const TaskList = (props: PropType) => {
+  const { isDarkMode } = props;
+
   const [columns, setColumns] = useState<Column[]>(defaultCols);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [tasks, setTasks] = useState<Task[]>(defaultTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
+  const isSaving = useSelector<RootState, boolean>(
+    (state) => state.task.isSaving
+  );
+
+  const username = useSelector<RootState, string>(
+    (state) => state.user.username
+  );
+
   const dispatch = useDispatch();
+  const dispatchAsync = useAppDispatch();
+
+  const handleGetTaskList = async (username: string) => {
+    const rs = await dispatchAsync(getTaskByUsername(username));
+
+    if (rs.type === "task/get_task_by_username/fulfilled") {
+      setTasks(rs.payload);
+    } else {
+      setTasks([]);
+    }
+  };
+
+  useEffect(() => {
+    if (username !== undefined) {
+      handleGetTaskList(username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -86,62 +131,78 @@ const TaskList = () => {
       <div className="flex justify-end py-5">
         <Button
           type="primary"
-          onClick={() => {
-            dispatch({ type: "update_taskList", payload: tasks });
+          onClick={async () => {
+            const data = { taskList: tasks, username: username };
+
+            const rs = await dispatchAsync(updateTaskList(data));
+
+            if (rs.type === "task/update_task_list/fulfilled") {
+              toast.success("Lưu thành công");
+            } else {
+              toast.error("Lưu thất bại");
+            }
           }}
         >
           Lưu thay đổi
         </Button>
       </div>
-      <DndContext
-        sensors={sensors}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
-      >
-        <div className="m-auto flex gap-4">
-          <div className="flex flex-col xl:flex-row gap-4">
-            <SortableContext items={columnsId}>
-              {columns.map((col) => (
+      {isSaving ? (
+        <div className="w-[250px] md:w-[500px] lg:w-[800px] xl:w-[1000px]">
+          <LoadingCpm />
+        </div>
+      ) : (
+        <DndContext
+          sensors={sensors}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onDragOver={onDragOver}
+        >
+          <div className="m-auto flex gap-4">
+            <div className="flex flex-col xl:flex-row gap-4">
+              <SortableContext items={columnsId}>
+                {columns.map((col) => (
+                  <TaskListLane
+                    isDarkMode={isDarkMode}
+                    key={col.id}
+                    column={col}
+                    updateColumn={updateColumn}
+                    createTask={createTask}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask}
+                    tasks={tasks.filter((task) => task.columnId === col.id)}
+                  />
+                ))}
+              </SortableContext>
+            </div>
+          </div>
+
+          {createPortal(
+            <DragOverlay>
+              {activeColumn && (
                 <TaskListLane
-                  key={col.id}
-                  column={col}
+                  isDarkMode={isDarkMode}
+                  column={activeColumn}
                   updateColumn={updateColumn}
                   createTask={createTask}
                   deleteTask={deleteTask}
                   updateTask={updateTask}
-                  tasks={tasks.filter((task) => task.columnId === col.id)}
+                  tasks={tasks.filter(
+                    (task) => task.columnId === activeColumn.id
+                  )}
                 />
-              ))}
-            </SortableContext>
-          </div>
-        </div>
-
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <TaskListLane
-                column={activeColumn}
-                updateColumn={updateColumn}
-                createTask={createTask}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-                tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
-                )}
-              />
-            )}
-            {activeTask && (
-              <TaskListCard
-                task={activeTask}
-                deleteTask={deleteTask}
-                updateTask={updateTask}
-              />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
-      </DndContext>
+              )}
+              {activeTask && (
+                <TaskListCard
+                  task={activeTask}
+                  deleteTask={deleteTask}
+                  updateTask={updateTask}
+                />
+              )}
+            </DragOverlay>,
+            document.body
+          )}
+        </DndContext>
+      )}
     </div>
   );
 

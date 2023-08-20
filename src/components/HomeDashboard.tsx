@@ -12,6 +12,10 @@ import {
 
 import TaskList from "./TaskList";
 
+interface PropType {
+  isDarkMode: boolean;
+}
+
 const CustomCountUp = (end: any) => {
   const { value } = useCountUp({
     isCounting: true,
@@ -26,7 +30,9 @@ const CustomCountUp = (end: any) => {
 
 const formatter = (value: any) => <CustomCountUp value={value} />;
 
-const HomeDashboard = () => {
+const HomeDashboard = (props: PropType) => {
+  const { isDarkMode } = props;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -78,7 +84,7 @@ const HomeDashboard = () => {
         <p className="text-2xl font-bold mb-5">
           Ghi chú tiến trình học tập của bạn:
         </p>
-        <TaskList />
+        <TaskList isDarkMode={isDarkMode} />
       </Space>
     </div>
   );

@@ -1,4 +1,9 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import {
+  BulbOutlined,
+  LoadingOutlined,
+  AlertOutlined,
+} from "@ant-design/icons";
 import PlusIcon from "../utils/PlusIcon";
 
 import { Id, Task, Column } from "../types/task.type";
@@ -7,6 +12,7 @@ import { useMemo, useState } from "react";
 import TaskListCard from "./TaskListCard";
 
 interface Props {
+  isDarkMode: boolean;
   column: Column;
   updateColumn: (id: Id, title: string) => void;
 
@@ -17,6 +23,7 @@ interface Props {
 }
 
 const TaskListLane = ({
+  isDarkMode,
   column,
   updateColumn,
   createTask,
@@ -66,22 +73,26 @@ const TaskListLane = ({
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-gray-800 w-[280px] lg:w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+      className={`${
+        !isDarkMode
+          ? "bg-gray-100 w-[280px] lg:w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+          : "bg-gray-800 w-[280px] lg:w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+      }`}
     >
       {/* Column title */}
       <div
         {...attributes}
         {...listeners}
-        className="bg-gray-600 text-white text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3
+        className="bg-blue-600 text-white text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3
         font-bold flex items-center justify-between"
       >
         <div className="flex gap-2">
-          <div className="flex justify-center items-center bg-gray-800 px-2 py-1 text-sm rounded-full">
-            {column.id === "todo" && <>0</>}
-            {column.id === "doing" && <>1</>}
-            {column.id === "done" && <>2</>}
+          <div className="flex justify-center items-center bg-blue-800 px-2 py-1 text-sm rounded-full">
+            {column.id === "todo" && <BulbOutlined className="px-1 py-2" />}
+            {column.id === "doing" && <LoadingOutlined className="px-1 py-2" />}
+            {column.id === "done" && <AlertOutlined className="px-1 py-2" />}
           </div>
-          {!editMode && column.title}
+          {!editMode && <p className="pt-2 pl-1">{column.title}</p>}
         </div>
       </div>
 

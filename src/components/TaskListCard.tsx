@@ -45,7 +45,7 @@ const TaskListCard = ({ task, deleteTask, updateTask }: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="opacity-30 bg-gray-900 p-2.5 h-[100px] min-h-[100px] items-center flex text-left
+        className="opacity-30 bg-gray-300 p-2.5 h-[100px] min-h-[100px] items-center flex text-left
         rounded-xl border-2 border-gray-900 cursor-grab relative"
       />
     );
@@ -58,8 +58,8 @@ const TaskListCard = ({ task, deleteTask, updateTask }: Props) => {
         style={style}
         {...attributes}
         {...listeners}
-        className="bg-gray-600 p-2.5 h-[100px] min-h-[100px] items-center flex text-left
-        rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative"
+        className="bg-neutral-500 p-2.5 h-[100px] min-h-[100px] items-center flex text-left
+        rounded-xl hover:ring-2 hover:ring-inset hover:ring-blue-500 cursor-grab relative"
       >
         <textarea
           className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
@@ -85,8 +85,8 @@ const TaskListCard = ({ task, deleteTask, updateTask }: Props) => {
       {...attributes}
       {...listeners}
       onClick={toggleEditMode}
-      className="bg-gray-600 text-white p-2.5 h-[100px] min-h-[100px] items-center flex text-left
-      rounded-xl hover:ring-2 cursor-grab relative task"
+      className="bg-sky-500 text-white p-2.5 h-[100px] min-h-[100px] items-center flex text-left
+      rounded-xl hover:ring-2 cursor-grab relative task hover:bg-sky-600"
       onMouseEnter={() => {
         setMouseIsOver(true);
       }}
@@ -103,7 +103,7 @@ const TaskListCard = ({ task, deleteTask, updateTask }: Props) => {
           onClick={() => {
             deleteTask(task.id);
           }}
-          className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-gray-700 p-2 rounded opacity-60 hover:opacity-100"
+          className="stroke-white absolute right-4 top-1/2 -translate-y-1/2 bg-red-500 p-2 rounded opacity-60 hover:opacity-100"
         >
           <TrashIcon />
         </button>

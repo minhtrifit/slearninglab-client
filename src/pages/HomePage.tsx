@@ -199,7 +199,10 @@ const HomePage = () => {
                   }}
                 >
                   <Routes>
-                    <Route path="/" element={<HomeDashboard />} />
+                    <Route
+                      path="/"
+                      element={<HomeDashboard isDarkMode={isDarkMode} />}
+                    />
                     <Route path="/classes/*" element={<HomeClasses />} />
                   </Routes>
                 </div>
