@@ -20,9 +20,11 @@ import {
   getCalenderByUsername,
 } from "../redux/reducers/task.reducer";
 
-const UserCalendar = () => {
+const UserCalendar = (props: any) => {
   const [weekendsVisible, setWeekendsVisible] = useState<boolean>(true);
   const [currentEvents, setCurrentEvents] = useState<any[]>([]);
+
+  const { isDarkMode } = props;
 
   const isSaving = useSelector<RootState, boolean>(
     (state) => state.task.isSaving
@@ -131,6 +133,9 @@ const UserCalendar = () => {
 
   const handleEvents = (events: any) => {
     setCurrentEvents(events);
+    // events.map((e: any) => {
+    //   console.log(e._def.publicId);
+    // });
   };
 
   const renderEventContent = (eventInfo: any) => {
@@ -167,7 +172,7 @@ const UserCalendar = () => {
   };
 
   return (
-    <div className="mt-32">
+    <div className="mt-32 hidden md:block">
       <div className="w-[80%] mb-10 mx-auto flex justify-end">
         <Button
           type="primary"
@@ -181,7 +186,13 @@ const UserCalendar = () => {
       {!isLoading && calenderList !== undefined && (
         <div className="w-[80%] min-h-[100%] flex flex-col lg:flex-row mx-auto justify-between">
           {renderSidebar()}
-          <div className="w-[280px] md:w-[500px] xl:w-[700px]">
+          <div
+            className={`${
+              !isDarkMode
+                ? "w-[280px] md:w-[500px] xl:w-[700px]"
+                : "w-[280px] md:w-[500px] xl:w-[700px] bg-slate-800"
+            }`}
+          >
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               headerToolbar={{

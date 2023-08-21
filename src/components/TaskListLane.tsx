@@ -75,8 +75,8 @@ const TaskListLane = ({
       style={style}
       className={`${
         !isDarkMode
-          ? "bg-gray-100 w-[280px] lg:w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
-          : "bg-gray-800 w-[280px] lg:w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+          ? "bg-gray-100 min-w-[280px] lg:min-w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
+          : "bg-gray-800 min-w-[280px] lg:min-w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col"
       }`}
     >
       {/* Column title */}

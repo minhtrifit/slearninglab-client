@@ -78,7 +78,7 @@ const HomeDashboard = (props: PropType) => {
           </Space>
         </Space>
       </Space>
-      <UserCalendar />
+      <UserCalendar isDarkMode={isDarkMode} />
       <Space
         size="large"
         className="mx-auto my-40 flex flex-col w-[100%] lg:w-[80%]"

@@ -19,6 +19,12 @@ import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { Button } from "antd";
 import { toast } from "react-toastify";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+
+// import required modules
+import { Pagination } from "swiper/modules";
 import { v4 } from "uuid";
 
 import LoadingCpm from "./LoadingCpm";
@@ -127,7 +133,7 @@ const TaskList = (props: PropType) => {
   );
 
   return (
-    <div className="">
+    <div className="flex flex-col mx-auto">
       <div className="flex justify-end py-5">
         <Button
           type="primary"
@@ -147,7 +153,7 @@ const TaskList = (props: PropType) => {
         </Button>
       </div>
       {isSaving ? (
-        <div className="w-[250px] md:w-[500px] lg:w-[800px] xl:w-[1000px]">
+        <div className="">
           <LoadingCpm />
         </div>
       ) : (
@@ -157,8 +163,8 @@ const TaskList = (props: PropType) => {
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
         >
-          <div className="m-auto flex gap-4">
-            <div className="flex flex-col xl:flex-row gap-4">
+          <div className="mx-auto flex gap-4">
+            <div className="flex flex-col justify-center xl:flex-row gap-4">
               <SortableContext items={columnsId}>
                 {columns.map((col) => (
                   <TaskListLane
@@ -175,7 +181,6 @@ const TaskList = (props: PropType) => {
               </SortableContext>
             </div>
           </div>
-
           {createPortal(
             <DragOverlay>
               {activeColumn && (
