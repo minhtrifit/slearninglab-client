@@ -58,7 +58,10 @@ const UserCalendar = (props: any) => {
 
   const renderSidebarEvent = (event: any) => {
     return (
-      <Space key={event.id} className="flex flex-col items-start">
+      <Space
+        key={event.id}
+        className="flex flex-col items-start bg-sky-700 p-5 rounded-md text-white"
+      >
         <Space>
           <b>
             {formatDate(event.start, {
@@ -94,7 +97,12 @@ const UserCalendar = (props: any) => {
         </Space>
         <Space size="middle" className="flex flex-col items-start mt-10">
           <h2>Tất cả sự kiện: ({currentEvents.length})</h2>
-          <div>{currentEvents.map(renderSidebarEvent)}</div>
+          <Space
+            size="middle"
+            className="flex flex-col items-start h-[300px] max-h-[300px] overflow-y-auto"
+          >
+            {currentEvents.map(renderSidebarEvent)}
+          </Space>
         </Space>
       </div>
     );
@@ -149,9 +157,10 @@ const UserCalendar = (props: any) => {
 
   const handleUpdateCalender = async () => {
     const calenderList = currentEvents.map((event) => {
+      const uid = v4();
       return {
         title: event._def.title,
-        publicId: event._def.publicId,
+        publicId: uid,
         start: transformDate2(event._instance.range.start),
         end: transformDate2(event._instance.range.end),
       };

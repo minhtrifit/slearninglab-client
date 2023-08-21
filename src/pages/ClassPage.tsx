@@ -18,6 +18,7 @@ import { getClassInfoById } from "../redux/reducers/class.reducer";
 
 import ClassExam from "../components/ClassExam";
 import ClassChat from "../components/ClassChat";
+import ClassDocument from "../components/ClassDocument";
 
 import { joinClassChat } from "../helpers/socket";
 
@@ -50,7 +51,7 @@ const tabItems: any[] = [
       </span>
     ),
     key: 3,
-    children: <div>3</div>,
+    children: <ClassDocument />,
   },
 ];
 

@@ -19,12 +19,6 @@ import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { Button } from "antd";
 import { toast } from "react-toastify";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-
-// import required modules
-import { Pagination } from "swiper/modules";
 import { v4 } from "uuid";
 
 import LoadingCpm from "./LoadingCpm";
