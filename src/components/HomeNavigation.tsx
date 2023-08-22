@@ -28,6 +28,8 @@ const HomeNavigation = (props: propType) => {
   useEffect(() => {
     if (url.includes("/classes")) {
       setNavValue("2");
+    } else if (url.includes("/profile")) {
+      setNavValue("3");
     } else {
       setNavValue("1");
     }

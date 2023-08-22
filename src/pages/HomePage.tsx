@@ -6,7 +6,11 @@ import { useSocket } from "../hooks/useSocket";
 import { StartListeners, SendHandshake } from "../helpers/socket";
 import { RootState } from "../redux/store";
 import { Navigate, useNavigate, Routes, Route } from "react-router-dom";
-import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Layout, MenuProps, theme, ConfigProvider, Switch } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -14,21 +18,24 @@ import { logoutAccount } from "../redux/actions/user.action";
 
 import HomeDashboard from "../components/HomeDashboard";
 import HomeClasses from "../components/HomeClasses";
+import HomeProfile from "./HomeProfile";
 import HomeNavigation from "../components/HomeNavigation";
 import HomeHeader from "../components/HomeHeader";
 import HomeFooter from "../components/HomeFooter";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const navLabel = ["Trang chủ", "Lớp học"];
+const navLabel = ["Trang chủ", "Lớp học", "Hồ sơ"];
 
-const items: MenuProps["items"] = [HomeOutlined, AppstoreOutlined].map(
-  (icon, index) => ({
-    key: String(index + 1),
-    icon: React.createElement(icon),
-    label: navLabel[index],
-  })
-);
+const items: MenuProps["items"] = [
+  HomeOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+].map((icon, index) => ({
+  key: String(index + 1),
+  icon: React.createElement(icon),
+  label: navLabel[index],
+}));
 
 const HomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState<any>();
@@ -144,10 +151,15 @@ const HomePage = () => {
       document.title = "Slearninglab | Lớp học";
       setNavContentDefault(2);
     }
+    if (e.domEvent.target.textContent === "Hồ sơ") {
+      navigate("/home/profile");
+      document.title = "Slearninglab | Hồ sơ";
+      setNavContentDefault(2);
+    }
   };
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
-    console.log("click", e);
+    // console.log("click", e);
     if (e.key === "logout") {
       dispatch(logoutAccount());
     }
@@ -204,6 +216,7 @@ const HomePage = () => {
                       element={<HomeDashboard isDarkMode={isDarkMode} />}
                     />
                     <Route path="/classes/*" element={<HomeClasses />} />
+                    <Route path="/profile/*" element={<HomeProfile />} />
                   </Routes>
                 </div>
               </Content>
