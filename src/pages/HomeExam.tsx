@@ -11,6 +11,7 @@ import {
   Form,
   Radio,
   Image,
+  Card,
 } from "antd";
 import type { MenuProps } from "antd";
 import { RedditOutlined } from "@ant-design/icons";
@@ -345,72 +346,74 @@ const HomeExam = () => {
                 )}
               </div>
             ) : (
-              <div className="min-h-[850px] pt-40 w-[90%] sm:w-[80%] xl:w-[40%] mx-auto">
-                <Space className="flex flex-col">
-                  <div className="w-[250px] mb-10">
-                    <img
-                      src="../assets/result.png"
-                      alt="result"
-                      className="w-[100%]"
-                    />
-                  </div>
-                  <div>
-                    <p
-                      className={
-                        isDarkMode
-                          ? "text-white text-2xl"
-                          : "text-black text-2xl"
-                      }
+              <div className="min-h-[850px] pt-20 w-[90%] sm:w-[80%] xl:w-[40%] mx-auto">
+                <Card title="Kết quả bài thi">
+                  <Space className="flex flex-col">
+                    <div className="w-[250px] mb-10">
+                      <img
+                        src="../assets/result.png"
+                        alt="result"
+                        className="w-[100%]"
+                      />
+                    </div>
+                    <div>
+                      <p
+                        className={
+                          isDarkMode
+                            ? "text-white text-2xl"
+                            : "text-black text-2xl"
+                        }
+                      >
+                        Tên thí sinh: {getResult.usernameId}
+                      </p>
+                      <p
+                        className={
+                          isDarkMode
+                            ? "text-white text-2xl"
+                            : "text-black text-2xl"
+                        }
+                      >
+                        Mã bài thi: {getResult.examId}
+                      </p>
+                      <p
+                        className={
+                          isDarkMode
+                            ? "text-white text-2xl"
+                            : "text-black text-2xl"
+                        }
+                      >
+                        Tên bài thi: {getResult.examName}
+                      </p>
+                      <p
+                        className={
+                          getResult.amount / getResult.result > 2
+                            ? "text-red-500 font-bold text-2xl"
+                            : "text-green-500 font-bold text-2xl"
+                        }
+                      >
+                        Kết quả: {getResult.result} / {getResult.amount}
+                      </p>
+                      <p
+                        className={
+                          isDarkMode
+                            ? "text-white text-2xl"
+                            : "text-black text-2xl"
+                        }
+                      >
+                        Ngày thi: {transformDate(getResult.date)}
+                      </p>
+                    </div>
+                    <Button
+                      className="mt-16"
+                      type="primary"
+                      onClick={() => {
+                        navigate(`/home/classes/${detailClass?.id}`);
+                      }}
                     >
-                      Tên thí sinh: {getResult.usernameId}
-                    </p>
-                    <p
-                      className={
-                        isDarkMode
-                          ? "text-white text-2xl"
-                          : "text-black text-2xl"
-                      }
-                    >
-                      Mã bài thi: {getResult.examId}
-                    </p>
-                    <p
-                      className={
-                        isDarkMode
-                          ? "text-white text-2xl"
-                          : "text-black text-2xl"
-                      }
-                    >
-                      Tên bài thi: {getResult.examName}
-                    </p>
-                    <p
-                      className={
-                        getResult.amount / getResult.result > 2
-                          ? "text-red-500 font-bold text-2xl"
-                          : "text-green-500 font-bold text-2xl"
-                      }
-                    >
-                      Kết quả: {getResult.result} / {getResult.amount}
-                    </p>
-                    <p
-                      className={
-                        isDarkMode
-                          ? "text-white text-2xl"
-                          : "text-black text-2xl"
-                      }
-                    >
-                      Ngày thi: {transformDate(getResult.date)}
-                    </p>
-                  </div>
-                  <Button
-                    className="mt-16"
-                    type="primary"
-                    onClick={() => {
-                      navigate(`/home/classes/${detailClass?.id}`);
-                    }}
-                  >
-                    Xác nhận
-                  </Button>
-                </Space>
+                      Xác nhận
+                    </Button>
+                  </Space>
+                </Card>
               </div>
             )}
           </Content>

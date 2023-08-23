@@ -21,6 +21,7 @@ interface UserState {
   accessToken: string;
   refreshToken: string;
   isLogin: boolean;
+  findUser: any | null;
 }
 
 // InitialState value
@@ -36,6 +37,7 @@ const initialState: UserState = {
   accessToken: "",
   refreshToken: "",
   isLogin: false,
+  findUser: null,
 };
 
 // createAsyncThunk middleware
@@ -143,6 +145,37 @@ export const loginAccount = createAsyncThunk(
   }
 );
 
+export const getUserProfile = createAsyncThunk(
+  "exam/get_user_profile",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (username: string | undefined, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(registerAccount.pending, (state) => {
@@ -234,6 +267,18 @@ const userReducer = createReducer(initialState, (builder) => {
       sessionStorage.removeItem("accessToken");
       sessionStorage.removeItem("refreshToken");
       window.location.reload();
+    })
+    .addCase(getUserProfile.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getUserProfile.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.findUser = action.payload;
+      }
+      state.isLoading = false;
+    })
+    .addCase(getUserProfile.rejected, (state) => {
+      state.isLoading = false;
     });
 });
 

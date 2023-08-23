@@ -10,6 +10,8 @@ import FileDownload from "js-file-download";
 import { ClassroomType } from "../types/class.type";
 import { DocumentType } from "../types/document.type";
 
+import { transformDate3 } from "../helpers/transform";
+
 import LoadingCpm from "./LoadingCpm";
 
 import {
@@ -24,7 +26,7 @@ interface DataType {
   key: number;
   id: string;
   fileName: string;
-  dateUploaded: Date;
+  dateUploaded: string;
 }
 
 const { Search } = Input;
@@ -67,7 +69,7 @@ const ClassDocument = () => {
         key: index + 1,
         id: doc.id,
         fileName: doc.fileName,
-        dateUploaded: doc.dateUploaded,
+        dateUploaded: transformDate3(doc.dateUploaded),
       };
 
       return data.push(docData);
@@ -164,7 +166,7 @@ const ClassDocument = () => {
       key: "dateUploaded",
     },
     {
-      title: "Action",
+      title: "Thao tác",
       key: "action",
       render: (_, record) => (
         <Space size="middle">

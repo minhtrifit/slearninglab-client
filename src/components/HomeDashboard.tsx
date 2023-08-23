@@ -46,7 +46,7 @@ const HomeDashboard = (props: PropType) => {
       <Space className="w-[100%] xl:w-[80%] mx-auto my-20 flex flex-col items-start 2xl:flex-row 2xl:justify-between">
         <Space size="middle" className="flex flex-col items-start">
           <p className="text-2xl font-bold">Chào mừng quay trở lại, {name}!</p>
-          <p>Thông số cá nhân của bạn:</p>
+          <p>Thống kê hệ thống học tập:</p>
         </Space>
         <Space
           size="large"
@@ -55,7 +55,7 @@ const HomeDashboard = (props: PropType) => {
           <Space size="large">
             <BarChartOutlined className="text-5xl" />
             <Statistic
-              title="Lớp học tham gia"
+              title="Số lớp học hoạt động"
               value={120046}
               formatter={formatter}
             />
@@ -63,7 +63,7 @@ const HomeDashboard = (props: PropType) => {
           <Space size="large" className="mx-0 lg:mx-10">
             <FileTextOutlined className="text-5xl" />
             <Statistic
-              title="Bài thi đã làm"
+              title="Số bài thi hiện hành"
               value={51250}
               formatter={formatter}
             />
