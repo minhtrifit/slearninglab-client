@@ -5,13 +5,14 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 import { ExamType, QuestionType } from "../types/exam.type";
 
 import ExamUpload from "./ExamUpload";
 import ExamAnswerAmount from "./ExamAnswerAmount";
 
-import { createExam } from "../redux/reducers/exam.reducer";
+import { createExam, getExamByClassId } from "../redux/reducers/exam.reducer";
 
 import { ClassroomType } from "../types/class.type";
 
@@ -23,17 +24,21 @@ interface PropType {
 
 const CreateExamModal = (props: PropType) => {
   const { openExamModal, setOpenExamModal } = props;
+  const [form] = Form.useForm();
 
   const [questionAmount, setQuestionAmount] = useState(0);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const dispatchAsync = useAppDispatch();
+  const navigate = useNavigate();
 
   const detailClass = useSelector<RootState, ClassroomType | null>(
     (state) => state.class.detailClass
   );
 
   const onFinish = async (values: any) => {
+    let checkMatch = true;
+
     // eslint-disable-next-line no-var
     for (var i = 0; i < values.questions.length; ++i) {
       if (values.questions[i].image?.fileList !== undefined) {
@@ -70,6 +75,10 @@ const CreateExamModal = (props: PropType) => {
           }
         }
 
+        if (!questionData.ans.includes(questionData.correct)) {
+          checkMatch = false;
+        }
+
         if (values?.questions[i]?.image?.length !== 0) {
           // eslint-disable-next-line no-var
           for (var j = 0; j < values?.questions[i]?.image?.length; ++j) {
@@ -80,19 +89,29 @@ const CreateExamModal = (props: PropType) => {
         examData.question.push(questionData);
       }
 
-      setConfirmLoading(true);
+      if (checkMatch === true) {
+        setConfirmLoading(true);
 
-      const rs = await dispatchAsync(createExam(examData));
+        const rs = await dispatchAsync(createExam(examData));
 
-      if (rs.type === "exam/create_exam/fulfilled") {
-        sessionStorage.setItem("createExam", "true");
+        if (rs.type === "exam/create_exam/fulfilled") {
+          // sessionStorage.setItem("createExam", "true");
+          toast.success("Tạo bài thi thành công");
+          dispatchAsync(getExamByClassId(detailClass?.id));
+        } else {
+          // sessionStorage.setItem("createExam", "false");
+          toast.error("Tạo bài thi thất bại");
+        }
+
+        form.resetFields();
+
+        setOpenExamModal(false);
+        setConfirmLoading(false);
+        navigate(`/home/classes/${detailClass?.id}`);
+        // window.location.reload();
       } else {
-        sessionStorage.setItem("createExam", "false");
+        toast.error("Câu trả lời không trùng khớp");
       }
-
-      setOpenExamModal(false);
-      setConfirmLoading(false);
-      window.location.reload();
     }
   };
 
@@ -115,6 +134,7 @@ const CreateExamModal = (props: PropType) => {
         ]}
       >
         <Form
+          form={form}
           className="w-[60%] mx-auto"
           name="dynamic_form_nest_item"
           onFinish={onFinish}

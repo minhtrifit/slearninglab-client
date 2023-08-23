@@ -178,15 +178,17 @@ const ClassDocument = () => {
           >
             Download tài liệu
           </Button>
-          <Button
-            type="primary"
-            danger
-            onClick={() => {
-              handleDeleteFile(record.id);
-            }}
-          >
-            Xóa tài liệu
-          </Button>
+          {roles.includes("teacher") && (
+            <Button
+              type="primary"
+              danger
+              onClick={() => {
+                handleDeleteFile(record.id);
+              }}
+            >
+              Xóa tài liệu
+            </Button>
+          )}
         </Space>
       ),
     },
