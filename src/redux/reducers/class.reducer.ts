@@ -249,6 +249,37 @@ export const acceptJoinClass = createAsyncThunk(
   }
 );
 
+export const deleteClassById = createAsyncThunk(
+  "class/delete_class_by_id",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (classId: string | undefined, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/classroom/deleteClassById`,
+        {
+          body: classId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const classReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(createClassroom.pending, (state) => {

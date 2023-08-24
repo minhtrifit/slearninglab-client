@@ -14,7 +14,11 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 
-import { getClassInfoById } from "../redux/reducers/class.reducer";
+import {
+  getClassInfoById,
+  deleteClassById,
+  getClassByUsername,
+} from "../redux/reducers/class.reducer";
 
 import ClassExam from "../components/ClassExam";
 import ClassChat from "../components/ClassChat";
@@ -110,6 +114,29 @@ const ClassPage = () => {
     <div className="min-h-[900px]">
       {/* <ToastContainer position="bottom-left" theme="colored" /> */}
       <Space size="large" className="flex justify-end">
+        <Button
+          type="primary"
+          danger
+          onClick={async () => {
+            let text;
+            if (
+              confirm(
+                "Bạn có chắc muốn xóa lớp học ? (Điều này sẽ dẫn đến dữ liệu các bài thi, cuộc trò chuyện và tài liệu bị xóa)"
+              ) == true
+            ) {
+              const rs = await dispatchAsync(deleteClassById(detailClass?.id));
+              if (rs.type === "class/delete_class_by_id/fulfilled") {
+                navigate("/home/classes");
+                toast.success("Xóa lớp học thành công");
+                dispatchAsync(getClassByUsername(username));
+              } else toast.error("Xóa lớp học thất bại");
+            } else {
+              console.log("Not ok");
+            }
+          }}
+        >
+          Xóa lớp học
+        </Button>
         <Button
           type="primary"
           onClick={() => {
