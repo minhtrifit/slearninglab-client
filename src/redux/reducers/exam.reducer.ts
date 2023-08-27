@@ -9,6 +9,8 @@ import axios from "axios";
 
 import { findExam } from "../actions/exam.action";
 
+import { transformDate3 } from "../../helpers/transform";
+
 // Interface declair
 interface ExamState {
   isCreating: boolean;
@@ -20,6 +22,7 @@ interface ExamState {
   detailExamNonAns: ExamTypeNonAns | undefined;
   isSubmitting: boolean;
   getResult: ResultType | undefined;
+  userExamResult: any[];
 }
 
 // InitialState value
@@ -33,6 +36,7 @@ const initialState: ExamState = {
   detailExamNonAns: undefined,
   isSubmitting: false,
   getResult: undefined,
+  userExamResult: [],
 };
 
 // createAsyncThunk middleware
@@ -222,6 +226,37 @@ export const submitExam = createAsyncThunk(
   }
 );
 
+export const getExamResultByUsername = createAsyncThunk(
+  "exam/get_exam_result_by_username",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  async (username: string, thunkAPI) => {
+    try {
+      const accessToken = sessionStorage
+        .getItem("accessToken")
+        ?.toString()
+        .replace(/^"(.*)"$/, "$1");
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/exam/getExamResultByUsername`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const examReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(createExam.pending, (state) => {
@@ -306,6 +341,25 @@ const examReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteExam.rejected, (state) => {
       state.isDeleting = false;
+    })
+    .addCase(getExamResultByUsername.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getExamResultByUsername.fulfilled, (state, action) => {
+      state.userExamResult = [];
+      action.payload.map((result: any) => {
+        state.userExamResult.push({
+          key: result?.id,
+          name: result?.examInfo?.examName,
+          className: result?.classInfo?.className,
+          result: result?.result.toString() + "/" + result?.amount.toString(),
+          date: transformDate3(result.date),
+        });
+      });
+      state.isLoading = false;
+    })
+    .addCase(getExamResultByUsername.rejected, (state) => {
+      state.isLoading = false;
     });
 });
 

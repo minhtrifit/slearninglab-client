@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { v4 } from "uuid";
 
 import UserChart from "../components/UserChart";
+import UserExamResult from "../components/UserExamResult";
 
 import { getUserProfile } from "../redux/reducers/user.reducer";
 
@@ -63,7 +64,7 @@ const HomeProfile = () => {
         }}
       />
       <div className="w-[100%] flex justify-center">
-        <Card title="Hồ sơ người dùng" className="mt-10 w-[300px] lg:w-[800px]">
+        <Card title="Hồ sơ người dùng" className="mt-10 w-[70%]">
           <div className="flex flex-col lg:flex-row gap-10">
             <Avatar size={64} icon={<UserOutlined />} />
             <div className="flex flex-col gap-3">
@@ -101,6 +102,7 @@ const HomeProfile = () => {
             countCalender={findUser?.countCalender}
             countTask={findUser?.countTask}
           />
+          <UserExamResult username={findUser?.username} />
         </Card>
       </div>
     </div>
