@@ -4,9 +4,9 @@
 
 - Follow slearninglab server repo - [github](https://github.com/minhtrifit/slearninglab-server)
 
-# I. Installing tutorial
-
 ***
+
+# I. Installing tutorial
 
 ## Config .env file in root dir
 
