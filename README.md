@@ -35,6 +35,8 @@ $ npm run dev
 
 ![Login](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663989/slearninglab/showcase/login_xdltjo.png)
 
+***
+
 ## Home Page:
 
 ![Home](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696664030/slearninglab/showcase/homepage_zhu6ld.png)
@@ -43,9 +45,13 @@ $ npm run dev
 
 ![Home](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663993/slearninglab/showcase/homepage3_bq4ekb.png)
 
+***
+
 ## Class Page:
 
 ![Class](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663996/slearninglab/showcase/course_ru5vts.png)
+
+***
 
 ## Exam Page:
 
@@ -59,9 +65,13 @@ $ npm run dev
 
 ![Exam](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696664017/slearninglab/showcase/exam5_qursot.png)
 
+***
+
 ## Chat Page:
 
 ![Chat](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663996/slearninglab/showcase/chat_uazyot.png)
+
+***
 
 ## Document Page:
 
@@ -69,11 +79,15 @@ $ npm run dev
 
 ![Document](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663998/slearninglab/showcase/document2_pcbsgo.png)
 
+***
+
 ## Profile Page:
 
 ![Profile](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663990/slearninglab/showcase/profile_znefcc.png)
 
 ![Profile](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663997/slearninglab/showcase/profile2_dwuogb.png)
+
+***
 
 ## More: [Youtube demo video](https://www.youtube.com/watch?v=g9WHplySekY&t=2s)
 
