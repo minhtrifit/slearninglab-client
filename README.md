@@ -38,11 +38,17 @@ $ npm run dev
 
 ## Login Page:
 
+* JWT Authentication
+
 ![Login](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663989/slearninglab/showcase/login_xdltjo.png)
 
 ***
 
 ## Home Page:
+
+* Project stats showcase
+* DnD Calender
+* DnD To do list
 
 ![Home](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696664030/slearninglab/showcase/homepage_zhu6ld.png)
 
@@ -54,11 +60,17 @@ $ npm run dev
 
 ## Class Page:
 
+* 👨‍🎓 Student role: View class can join, can joined.
+* 👩‍🏫 Teacher role: View class that them manage.
+
 ![Class](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663996/slearninglab/showcase/course_ru5vts.png)
 
 ***
 
 ## Exam Page:
+
+* 👨‍🎓 Student role: Do quiz test created by teacher.
+* 👩‍🏫 Teacher role: Create quiz for student.
 
 ![Exam](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663997/slearninglab/showcase/exam_rgjhuv.png)
 
@@ -74,11 +86,16 @@ $ npm run dev
 
 ## Chat Page:
 
+* 👦👧 User role: Real time chat
+
 ![Chat](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663996/slearninglab/showcase/chat_uazyot.png)
 
 ***
 
 ## Document Page:
+
+* 👨‍🎓 Student role: Uploaded pdf documents.
+* 👩‍🏫 Teacher role: Downloaded documents.
 
 ![Document](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663997/slearninglab/showcase/document_b8aznp.png)
 
@@ -87,6 +104,8 @@ $ npm run dev
 ***
 
 ## Profile Page:
+
+* 👦👧 User role: Searching for other user activity.
 
 ![Profile](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663990/slearninglab/showcase/profile_znefcc.png)
 
