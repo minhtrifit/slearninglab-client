@@ -60,7 +60,7 @@ $ npm run dev
 
 ## Class Page:
 
-* 👨‍🎓 Student role: View class can join, can joined.
+* 👨‍🎓 Student role: View class can join, joined classes.
 * 👩‍🏫 Teacher role: View class that them manage.
 
 ![Class](https://res.cloudinary.com/dn2h31tcb/image/upload/v1696663996/slearninglab/showcase/course_ru5vts.png)
