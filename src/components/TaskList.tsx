@@ -14,7 +14,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import TaskListCard from "./TaskListCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { Button } from "antd";
@@ -47,28 +47,28 @@ const defaultCols: Column[] = [
   },
 ];
 
-const defaultTasks: Task[] = [
-  {
-    id: "1",
-    columnId: "todo",
-    content: "Tham gia lớp teacher1",
-  },
-  {
-    id: "2",
-    columnId: "doing",
-    content: "Trò chuyện với các thành viên lớp teacher1",
-  },
-  {
-    id: "3",
-    columnId: "doing",
-    content: "Làm test 1",
-  },
-  {
-    id: "4",
-    columnId: "done",
-    content: "Làm test 3",
-  },
-];
+// const defaultTasks: Task[] = [
+//   {
+//     id: "1",
+//     columnId: "todo",
+//     content: "Tham gia lớp teacher1",
+//   },
+//   {
+//     id: "2",
+//     columnId: "doing",
+//     content: "Trò chuyện với các thành viên lớp teacher1",
+//   },
+//   {
+//     id: "3",
+//     columnId: "doing",
+//     content: "Làm test 1",
+//   },
+//   {
+//     id: "4",
+//     columnId: "done",
+//     content: "Làm test 3",
+//   },
+// ];
 
 const generateId = () => {
   /* Generate a random number between 0 and 10000 */
@@ -98,7 +98,6 @@ const TaskList = (props: PropType) => {
     (state) => state.user.username
   );
 
-  const dispatch = useDispatch();
   const dispatchAsync = useAppDispatch();
 
   const handleGetTaskList = async (username: string) => {

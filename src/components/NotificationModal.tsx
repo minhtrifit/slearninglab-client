@@ -40,7 +40,7 @@ const NotificationModal = (props: PropType) => {
     userJoinedUsername: string,
     className: string
   ) => {
-    const rs = await dispatchAsync(
+    await dispatchAsync(
       acceptJoinClass({
         classId: classId,
         userJoinedId: userJoinedUsername,

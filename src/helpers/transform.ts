@@ -1,4 +1,4 @@
-export const transformDate = (value: Date) => {
+export const transformDate = () => {
   const today = new Date();
   const yyyy = today.getFullYear();
   let mm: any = today.getMonth() + 1; // Months start at 0!

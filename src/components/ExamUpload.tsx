@@ -2,8 +2,7 @@ import { Upload, message, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useState } from "react";
-import type { UploadChangeParam } from "antd/es/upload";
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import type { UploadProps } from "antd/es/upload/interface";
 
 interface PropType {
   Form: any;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
@@ -15,7 +15,6 @@ import { transformDate3 } from "../helpers/transform";
 import LoadingCpm from "./LoadingCpm";
 
 import {
-  uploadDocument,
   uploadMultiDocument,
   downloadDocument,
   getDocumentByClassId,
@@ -32,7 +31,6 @@ interface DataType {
 const { Search } = Input;
 
 const ClassDocument = () => {
-  const [fileChange, setFileChange] = useState<any>();
   const [fileList, setFileList] = useState<any>(null);
   const data: DataType[] = [];
 
@@ -49,9 +47,9 @@ const ClassDocument = () => {
     (state) => state.document.isLoading
   );
 
-  const classDocumentList = useSelector<RootState, DocumentType[]>(
-    (state) => state.document.classDocumentList
-  );
+  // const classDocumentList = useSelector<RootState, DocumentType[]>(
+  //   (state) => state.document.classDocumentList
+  // );
 
   const findDocumentList = useSelector<RootState, DocumentType[]>(
     (state) => state.document.findDocumentList
@@ -76,23 +74,23 @@ const ClassDocument = () => {
     });
   }
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", fileChange.target.files[0]);
-    const data = {
-      formData: formData,
-      classId: detailClass?.id,
-    };
+  // const handleUpload = async () => {
+  //   const formData = new FormData();
+  //   formData.append("file", fileChange.target.files[0]);
+  //   const data = {
+  //     formData: formData,
+  //     classId: detailClass?.id,
+  //   };
 
-    if (detailClass !== null) {
-      const rs = await dispatchAsync(uploadDocument(data));
-      if (rs.payload === true) {
-        toast.success("Tải tài liệu thành công");
-      } else {
-        toast.error("Tải tài liệu thất bại");
-      }
-    }
-  };
+  //   if (detailClass !== null) {
+  //     const rs = await dispatchAsync(uploadDocument(data));
+  //     if (rs.payload === true) {
+  //       toast.success("Tải tài liệu thành công");
+  //     } else {
+  //       toast.error("Tải tài liệu thất bại");
+  //     }
+  //   }
+  // };
 
   const handleUploadMulti = async (e: any) => {
     e.preventDefault();

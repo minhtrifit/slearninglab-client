@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Space, Empty } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 

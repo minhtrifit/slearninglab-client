@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Card, Space, Avatar, Input } from "antd";
+import { Card, Avatar, Input } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { toast } from "react-toastify";

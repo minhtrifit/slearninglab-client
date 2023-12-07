@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { MenuOutlined, LoginOutlined } from "@ant-design/icons";
@@ -46,7 +46,7 @@ const ClassJoinCard = (props: PropType) => {
     (state) => state.user.username
   );
 
-  const roles = useSelector<RootState, string[]>((state) => state.user.roles);
+  // const roles = useSelector<RootState, string[]>((state) => state.user.roles);
 
   const handleActions = async (name: string) => {
     if (name === "requestJoin") {

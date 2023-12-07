@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { Avatar, Space, Form, Button, Input, Empty } from "antd";
 
@@ -14,13 +13,11 @@ import { getAllChatByRoom, sendMessage } from "../helpers/socket";
 
 const ClassChat = () => {
   const [form] = Form.useForm();
-  const [messageText, setMessageText] = useState<string>();
   const [isSend, setIsSend] = useState<boolean>();
   const mainRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
-  const dispatchAsync = useAppDispatch();
 
   const socket = useSelector<RootState, Socket | undefined>(
     (state) => state.socket.socket

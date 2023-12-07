@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Form, Select, Space } from "antd";
 import { useTitle } from "../hooks/useTitle";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { ToastContainer, toast } from "react-toastify";
@@ -44,7 +44,6 @@ const tailFormItemLayout = {
 
 const RegisterPage: React.FC = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
   const dispathAsync = useAppDispatch();
 
   useTitle("Slearninglab | Đăng ký tài khoản");

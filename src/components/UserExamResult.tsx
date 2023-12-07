@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Space, Table, Tag } from "antd";
+import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useAppDispatch } from "../redux/hooks/hooks";
 

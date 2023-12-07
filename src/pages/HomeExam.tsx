@@ -5,7 +5,6 @@ import {
   Menu,
   theme,
   Layout,
-  Switch,
   Space,
   Button,
   Form,
@@ -17,12 +16,11 @@ import type { MenuProps } from "antd";
 import { RedditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Countdown from "react-countdown";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 import Loading from "../components/Loading";
 import LoadingCpm from "../components/LoadingCpm";
@@ -49,7 +47,6 @@ const HomeExam = () => {
   const formRef = useRef<any>();
 
   const { id } = useParams();
-  const dispatch = useDispatch();
   const dispatchAsync = useAppDispatch();
   const navigate = useNavigate();
 
@@ -106,10 +103,10 @@ const HomeExam = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const switchMode = (_checked: boolean) => {
-    setIsDarkMode(!isDarkMode);
-    sessionStorage.setItem("mode", JSON.stringify(!isDarkMode));
-  };
+  // const switchMode = (_checked: boolean) => {
+  //   setIsDarkMode(!isDarkMode);
+  //   sessionStorage.setItem("mode", JSON.stringify(!isDarkMode));
+  // };
 
   // Timeout event
   const Completionist = () => {
@@ -400,7 +397,7 @@ const HomeExam = () => {
                             : "text-black text-2xl"
                         }
                       >
-                        Ngày thi: {transformDate(getResult.date)}
+                        Ngày thi: {transformDate()}
                       </p>
                     </div>
                     <Button

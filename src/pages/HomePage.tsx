@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../redux/hooks/hooks";
 import { useTitle } from "../hooks/useTitle";
 import { useSocket } from "../hooks/useSocket";
 import { StartListeners, SendHandshake } from "../helpers/socket";
@@ -42,7 +41,6 @@ const HomePage = () => {
   const [navContentDefault, setNavContentDefault] = useState<number>(1);
 
   const dispatch = useDispatch();
-  const dispatchAsync = useAppDispatch();
   const navigate = useNavigate();
 
   useTitle("Slearninglab | Trang chủ");

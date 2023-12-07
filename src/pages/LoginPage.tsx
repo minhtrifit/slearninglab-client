@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Form, Space } from "antd";
 import { useTitle } from "../hooks/useTitle";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
@@ -44,7 +44,6 @@ const tailFormItemLayout = {
 
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
   const dispathAsync = useAppDispatch();
   const navigate = useNavigate();
 

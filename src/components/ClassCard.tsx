@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuOutlined, SendOutlined } from "@ant-design/icons";
 import { Avatar, Card } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../redux/hooks/hooks";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
 import DetailClassInfoModal from "./DetailClassInfoModal";
@@ -32,7 +31,6 @@ const ClassCard = (props: PropType) => {
   >();
 
   const navigate = useNavigate();
-  const dispatchAsync = useAppDispatch();
 
   const teacherClassList = useSelector<RootState, ClassroomType[]>(
     (state) => state.class.teacherClassList

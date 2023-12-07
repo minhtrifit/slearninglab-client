@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Modal, Button, Space, Image } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../redux/hooks/hooks";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { v4 } from "uuid";
 

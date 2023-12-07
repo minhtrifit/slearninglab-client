@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { Button, Space } from "antd";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core/index.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { toast } from "react-toastify";
@@ -13,7 +12,7 @@ import { v4 } from "uuid";
 
 import { transformDate2 } from "../helpers/transform";
 
-import { INITIAL_EVENTS, createEventId } from "../utils/event";
+import { createEventId } from "../utils/event";
 
 import {
   updateCalenderList,
@@ -26,9 +25,9 @@ const UserCalendar = (props: any) => {
 
   const { isDarkMode } = props;
 
-  const isSaving = useSelector<RootState, boolean>(
-    (state) => state.task.isSaving
-  );
+  // const isSaving = useSelector<RootState, boolean>(
+  //   (state) => state.task.isSaving
+  // );
 
   const isLoading = useSelector<RootState, boolean>(
     (state) => state.task.isLoading
@@ -42,7 +41,6 @@ const UserCalendar = (props: any) => {
     (state) => state.task.calenderList
   );
 
-  const dispatch = useDispatch();
   const dispatchAsync = useAppDispatch();
 
   const handleGetCalenderList = async () => {

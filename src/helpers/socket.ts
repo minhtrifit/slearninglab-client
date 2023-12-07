@@ -94,7 +94,7 @@ export const joinClassChat = (
   name: string,
   room: string | undefined
 ) => {
-  socket?.emit("joinClassChat", { name: name, room: room }, (rs: any) => {
+  socket?.emit("joinClassChat", { name: name, room: room }, () => {
     // console.log("Joined:", rs);
   });
 };

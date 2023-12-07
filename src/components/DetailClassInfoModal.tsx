@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button, Modal, Space } from "antd";
 
 import { ClassroomType } from "../types/class.type";

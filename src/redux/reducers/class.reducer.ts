@@ -285,7 +285,7 @@ const classReducer = createReducer(initialState, (builder) => {
     .addCase(createClassroom.pending, (state) => {
       state.isLoading = true;
     })
-    .addCase(createClassroom.fulfilled, (state, action) => {
+    .addCase(createClassroom.fulfilled, (state) => {
       state.isLoading = false;
     })
     .addCase(createClassroom.rejected, (state) => {

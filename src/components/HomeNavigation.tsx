@@ -13,14 +13,7 @@ interface propType {
 }
 
 const HomeNavigation = (props: propType) => {
-  const {
-    Sider,
-    isDarkMode,
-    navContentDefault,
-    setNavContentDefault,
-    items,
-    onClick,
-  } = props;
+  const { Sider, isDarkMode, setNavContentDefault, items, onClick } = props;
 
   const [navValue, setNavValue] = useState("");
   const url = window.location.href;

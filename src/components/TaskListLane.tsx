@@ -8,7 +8,7 @@ import PlusIcon from "../utils/PlusIcon";
 
 import { Id, Task, Column } from "../types/task.type";
 import { CSS } from "@dnd-kit/utilities";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import TaskListCard from "./TaskListCard";
 
 interface Props {
@@ -25,13 +25,13 @@ interface Props {
 const TaskListLane = ({
   isDarkMode,
   column,
-  updateColumn,
   createTask,
   tasks,
   deleteTask,
   updateTask,
 }: Props) => {
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
+  const editMode: boolean = false;
 
   const tasksIds = useMemo(() => {
     return tasks.map((task) => task.id);

@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCountUp } from "use-count-up";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
 import NotificationModal from "./NotificationModal";

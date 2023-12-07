@@ -6,12 +6,12 @@ import {
 } from "@ant-design/icons";
 import { useEffect } from "react";
 import { Tabs, Space, Button } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { ClassroomType } from "../types/class.type";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 
 import {
@@ -118,7 +118,6 @@ const ClassPage = () => {
           type="primary"
           danger
           onClick={async () => {
-            let text;
             if (
               confirm(
                 "Bạn có chắc muốn xóa lớp học ? (Điều này sẽ dẫn đến dữ liệu các bài thi, cuộc trò chuyện và tài liệu bị xóa)"

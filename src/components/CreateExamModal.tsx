@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Input, Space, Modal, InputNumber } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
