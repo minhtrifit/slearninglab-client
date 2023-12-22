@@ -85,7 +85,10 @@ const NotificationModal = (props: PropType) => {
     >
       <div className="max-h-[500px] flex flex-col overflow-y-auto">
         {notificationList.length === 0 && (
-          <Empty description="Không có thông báo" />
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="Không có thông báo"
+          />
         )}
         {notificationList.length !== 0 &&
           notificationList.map((noti, index) => {

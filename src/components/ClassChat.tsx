@@ -99,7 +99,11 @@ const ClassChat = () => {
             );
           })
         ) : (
-          <Empty className="my-20" description="Bắt đầu đoạn chat" />
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            className="my-20"
+            description="Bắt đầu đoạn chat"
+          />
         )}
       </Space>
       <div className="w-[80%] flex flex-col items-end">

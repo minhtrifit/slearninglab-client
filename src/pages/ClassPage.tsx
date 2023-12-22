@@ -77,6 +77,8 @@ const ClassPage = () => {
     (state) => state.user.username
   );
 
+  const roles = useSelector<RootState, string[]>((state) => state.user.roles);
+
   const handleGetAllClasses = async () => {
     const rs = await dispatchAsync(
       getClassInfoById({ id: routeParams.id, username: username })
@@ -114,28 +116,32 @@ const ClassPage = () => {
     <div className="min-h-[900px]">
       {/* <ToastContainer position="bottom-left" theme="colored" /> */}
       <Space size="large" className="flex justify-end">
-        <Button
-          type="primary"
-          danger
-          onClick={async () => {
-            if (
-              confirm(
-                "Bạn có chắc muốn xóa lớp học ? (Điều này sẽ dẫn đến dữ liệu các bài thi, cuộc trò chuyện và tài liệu bị xóa)"
-              ) == true
-            ) {
-              const rs = await dispatchAsync(deleteClassById(detailClass?.id));
-              if (rs.type === "class/delete_class_by_id/fulfilled") {
-                navigate("/home/classes");
-                toast.success("Xóa lớp học thành công");
-                dispatchAsync(getClassByUsername(username));
-              } else toast.error("Xóa lớp học thất bại");
-            } else {
-              console.log("Not ok");
-            }
-          }}
-        >
-          Xóa lớp học
-        </Button>
+        {roles && roles.includes("teacher") && (
+          <Button
+            type="primary"
+            danger
+            onClick={async () => {
+              if (
+                confirm(
+                  "Bạn có chắc muốn xóa lớp học ? (Điều này sẽ dẫn đến dữ liệu các bài thi, cuộc trò chuyện và tài liệu bị xóa)"
+                ) == true
+              ) {
+                const rs = await dispatchAsync(
+                  deleteClassById(detailClass?.id)
+                );
+                if (rs.type === "class/delete_class_by_id/fulfilled") {
+                  navigate("/home/classes");
+                  toast.success("Xóa lớp học thành công");
+                  dispatchAsync(getClassByUsername(username));
+                } else toast.error("Xóa lớp học thất bại");
+              } else {
+                console.log("Not ok");
+              }
+            }}
+          >
+            Xóa lớp học
+          </Button>
+        )}
         <Button
           type="primary"
           onClick={() => {
